@@ -1,9 +1,9 @@
 {
-  "name": "yocto",
+  "name": "yoctoerp",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {},
-  "private": true,
+  "private": false,
   "dependencies": {
     "tslib": "^2.3.0"
   },
@@ -19,6 +19,7 @@
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "~5.24.0",
     "@typescript-eslint/parser": "~5.24.0",
+    "@types/lodash": "^4.14.182",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.5.1",
