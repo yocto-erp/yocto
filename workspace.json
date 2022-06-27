@@ -3,6 +3,8 @@
   "version": 2,
   "projects": {
     "client": "libs/client",
-    "js-sdk": "libs/js-sdk"
+    "js-sdk": "libs/js-sdk",
+    "ui": "libs/ui",
+    "ui-e2e": "apps/ui-e2e"
   }
 }

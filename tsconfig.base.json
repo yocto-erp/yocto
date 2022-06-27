@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@yocto/client": ["libs/client/src/index.ts"],
-      "@yocto/js-sdk": ["libs/js-sdk/src/index.ts"]
+      "@yocto/js-sdk": ["libs/js-sdk/src/index.ts"],
+      "@yoctoerp/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
