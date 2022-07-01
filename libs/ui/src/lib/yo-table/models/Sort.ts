@@ -3,4 +3,4 @@ export enum SORT_DIR {
   ASC = 'asc',
 }
 
-export type TableSortType = Record<string, SORT_DIR>;
+export type TableSortType = Record<string, SORT_DIR | string>;

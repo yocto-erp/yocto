@@ -1,27 +1,19 @@
-import { ReactNode } from 'react';
-import { SORT_DIR } from './Sort';
-import { SearchRequest } from './SearchRequest';
-import { SearchResponse } from './SearchResponse';
+import { ReactNode } from "react";
+import { SearchRequest } from "./SearchRequest";
+import { SearchResponse } from "./SearchResponse";
 
 export interface BaseRow {
   id: string | number;
-  [key: string]: any
+
+  [key: string]: string | number | never;
 }
 
 interface TableRowRenderFn<Type> {
   (arg: Type): ReactNode;
 }
 
-export interface TableFetchDataFn<ROW> {
-  (arg: SearchRequest): Promise<SearchResponse<ROW>>;
-}
-
-export interface TableColumnOnSortFn {
-  (name: string, sort: SORT_DIR | null): void;
-}
-
-export interface TableColumnIsShowFn {
-  (): boolean;
+export interface TableFetchDataFn<F, R> {
+  (arg: SearchRequest<F>): Promise<SearchResponse<R>>;
 }
 
 export interface TableRowIdFn<ROW extends BaseRow> {
@@ -42,6 +34,6 @@ export interface TableColumn<ROW> {
   sort?: boolean | string;
   class?: string;
   width?: number;
-  isShow?: TableColumnIsShowFn;
+  isShow?: () => boolean;
   render?: TableRowRenderFn<ROW>;
 }

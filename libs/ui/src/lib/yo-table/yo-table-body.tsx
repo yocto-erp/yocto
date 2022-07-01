@@ -4,16 +4,17 @@ import {
   TableColumn,
   TableColumnOnSortFn,
   TableRowIdFn,
-} from './models/constants';
-import React, { useCallback } from 'react';
-import { isFunction } from 'lodash';
-import clsx from 'clsx';
+} from "./models/constants";
+import React, { useCallback } from "react";
+import { isFunction } from "lodash";
+import clsx from "clsx";
+import { useListStateContext } from "./models/reducer";
+import {SORT_DIR} from "./models/Sort";
 
 export interface YoTableBodyProps<ROW extends BaseRow> {
   rowId?: TableRowIdFn<ROW>;
-  onSort?: TableColumnOnSortFn;
+  onSort?: (name: string, sort: SORT_DIR | null) => void;
   columns: Array<TableColumn<ROW>>;
-  rows: Array<ROW>;
   enableSelectColumn?: boolean;
   selectedList?: Record<string, never>;
   onItemSelect?: TableBodyOnSelectItemFn<ROW>;
@@ -31,7 +32,6 @@ export function YoTableBody<ROW extends BaseRow>({
   rowId,
   onSort,
   columns,
-  rows,
   onItemSelect,
   selectedList,
   enableSelectColumn,
@@ -41,13 +41,14 @@ export function YoTableBody<ROW extends BaseRow>({
       if (isFunction(rowId)) {
         return rowId(row);
       }
-      return String(row['id']);
+      return String(row["id"]);
     },
     [rowId]
   );
+  const { data } = useListStateContext();
   return (
     <>
-      {rows.map((row) => (
+      {(data?.rows || []).map((row) => (
         <tr key={_rowId(row)} id={`ROW_${_rowId(row)}`}>
           {enableSelectColumn ? (
             <td className="min text-center">
@@ -76,7 +77,7 @@ export function YoTableBody<ROW extends BaseRow>({
                   key={item.data}
                   style={
                     item.width
-                      ? { width: item.width ? `${item.width}` : 'inherit' }
+                      ? { width: item.width ? `${item.width}` : "inherit" }
                       : {}
                   }
                   className={clsx(item.class)}
