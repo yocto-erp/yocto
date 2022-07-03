@@ -12,5 +12,5 @@
  - create react lib: nx g @nrwl/react:lib ui
    - nx g @nrwl/react:lib ui --buildable --publishable --importPath=@yoctoerp/ui
    - nx g component {my-component} --project=ui
- - publish: nx publish js-sdk --ver=1.0.0 --tag=0.0.1
+ - publish: nx publish ui --ver=1.0.0 --tag=latest
  - remove: nx g rm {libraryName}

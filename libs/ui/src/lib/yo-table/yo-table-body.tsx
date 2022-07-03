@@ -1,39 +1,29 @@
 import {
   BaseRow,
-  TableBodyOnSelectItemFn,
   TableColumn,
-  TableColumnOnSortFn,
   TableRowIdFn,
 } from "./models/constants";
 import React, { useCallback } from "react";
 import { isFunction } from "lodash";
 import clsx from "clsx";
-import { useListStateContext } from "./models/reducer";
-import {SORT_DIR} from "./models/Sort";
+import {useListActionContext, useListStateContext} from "./models/reducer";
 
 export interface YoTableBodyProps<ROW extends BaseRow> {
   rowId?: TableRowIdFn<ROW>;
-  onSort?: (name: string, sort: SORT_DIR | null) => void;
   columns: Array<TableColumn<ROW>>;
   enableSelectColumn?: boolean;
-  selectedList?: Record<string, never>;
-  onItemSelect?: TableBodyOnSelectItemFn<ROW>;
 }
 
 /**
  *
- * @param sorts: Current Sorts List
- * @param onSort: On Sort Colum
+ * @param rowId: function for generateID base on ROW
  * @param columns: List of define columns
  * @param enableSelectColumn: Enable Column for select item
  * @constructor
  */
 export function YoTableBody<ROW extends BaseRow>({
   rowId,
-  onSort,
   columns,
-  onItemSelect,
-  selectedList,
   enableSelectColumn,
 }: YoTableBodyProps<ROW>) {
   const _rowId = useCallback(
@@ -46,28 +36,27 @@ export function YoTableBody<ROW extends BaseRow>({
     [rowId]
   );
   const { data } = useListStateContext();
+  const { isItemSelect, toggleItem } = useListActionContext();
   return (
     <>
-      {(data?.rows || []).map((row) => (
+      {(data?.rows || []).map((row, index) => (
         <tr key={_rowId(row)} id={`ROW_${_rowId(row)}`}>
           {enableSelectColumn ? (
             <td className="min text-center">
-              <div className="form-check">
                 <input
-                  className="form-check-input position-static"
+                  className="form-check-input"
                   type="checkbox"
                   id={_rowId(row)}
                   value="1"
                   aria-label="..."
                   defaultChecked={
-                    selectedList && selectedList[`item${String(_rowId(row))}`]
+                    isItemSelect(index)
                   }
                   checked={
-                    !!(selectedList && selectedList[`item${_rowId(row)}`])
+                    isItemSelect(index)
                   }
-                  onChange={() => isFunction(onItemSelect) && onItemSelect(row)}
+                  onChange={() => toggleItem(index)}
                 />
-              </div>
             </td>
           ) : null}
           {columns.map((item) => {

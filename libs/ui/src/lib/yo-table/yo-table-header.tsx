@@ -1,12 +1,13 @@
-import {
-  TableColumn,
-  TableHeaderOnSelectAllFn,
-} from "./models/constants";
-import React, { useCallback } from "react";
-import { Button } from "react-bootstrap";
+import { TableColumn, TableHeaderOnSelectAllFn } from "./models/constants";
+import React  from "react";
 import { isString } from "lodash";
 import { SORT_DIR } from "./models/Sort";
-import {useListStateContext} from "./models/reducer";
+import {
+  TABLE_SELECT_TYPE,
+  useListActionContext,
+  useListStateContext,
+} from "./models/reducer";
+import { API_STATE } from "../api";
 
 export interface YoTableHeaderProps<ROW> {
   onSort?: (name: string, sort: SORT_DIR | string) => void;
@@ -22,21 +23,20 @@ const SORT_ORDER = [SORT_DIR.ASC, SORT_DIR.DESC, ""];
  * @param sorts: Current Sorts List
  * @param onSort: On Sort Colum
  * @param columns: List of define columns
- * @param onSelectAll: On Select All
  * @param enableSelectColumn: Enable Column for select item
  * @constructor
  */
 export function YoTableHeader<ROW>({
   onSort,
   columns,
-  onSelectAll,
   enableSelectColumn,
 }: YoTableHeaderProps<ROW>) {
-  const tableState = useListStateContext()
+  const tableState = useListStateContext();
   const onSortClick = React.useCallback(
     (name: string) => {
-      console.log(name)
-      const sorts = tableState.search.sorts
+      console.log(name);
+      if (tableState.state === API_STATE.LOADING) return;
+      const sorts = tableState.search.sorts;
       if (onSort && sorts) {
         const currentDir = sorts && sorts[name];
         let dirIndex = SORT_ORDER.indexOf(currentDir);
@@ -54,17 +54,20 @@ export function YoTableHeader<ROW>({
 
   const getSortProps = React.useCallback(
     (col: TableColumn<ROW>) => {
-      const sorts = tableState.search.sorts
+      const sorts = tableState.search.sorts;
       const rs = {
         onClick: () => {
           console.log("Implement");
         },
         className: "",
+        isSort: !!col.sort,
+        dir: "",
       };
-      const className = [];
+      const className = [""];
       if (col.class) {
         className.push(col.class);
       }
+
       if (col.sort) {
         const colDir = isString(col.sort) ? col.sort : col.data;
         const colSortDir =
@@ -74,6 +77,7 @@ export function YoTableHeader<ROW>({
         if (colSortDir) {
           className.push(colSortDir);
         }
+        rs.dir = colSortDir;
         className.push(`sorting`);
         rs.onClick = () => onSortClick(colDir);
       }
@@ -84,14 +88,7 @@ export function YoTableHeader<ROW>({
     [onSortClick, tableState]
   );
 
-  const _onSelectAll = useCallback(
-    (isSelected: boolean) => {
-      if (onSelectAll) {
-        onSelectAll(isSelected);
-      }
-    },
-    [onSelectAll]
-  );
+  const { toggleAllItem } = useListActionContext();
 
   return (
     <tr>
@@ -99,38 +96,50 @@ export function YoTableHeader<ROW>({
         <th className="min text-center">
           Select
           <br />
-          <Button
+          <button
             type="button"
-            color="link"
-            size="sm"
-            className="text-success"
+            className="btn btn-link text-success btn-sm"
             style={{ padding: "2px" }}
-            onClick={() => _onSelectAll(true)}
+            onClick={() => toggleAllItem(TABLE_SELECT_TYPE.ALL)}
           >
             ALL
-          </Button>
+          </button>
           |
-          <Button
+          <button
             type="button"
             color="link"
-            size="sm"
-            className="text-danger"
+            className="btn text-danger btn-link btn-sm"
             style={{ padding: "2px" }}
-            onClick={() => _onSelectAll(false)}
+            onClick={() => toggleAllItem(TABLE_SELECT_TYPE.NONE)}
           >
-            None
-          </Button>
+            NONE
+          </button>
         </th>
       ) : null}
       {columns.map((item) => {
         if (!item.isShow || item.isShow()) {
+          const sortProps = getSortProps(item);
           return (
             <th
               key={item.data}
-              {...getSortProps(item)}
+              onClick={sortProps.onClick}
+              className={sortProps.className}
               style={item.width ? { width: item.width } : {}}
             >
               {item.header}
+              {sortProps.isSort && (
+                <>
+                  {sortProps.dir === SORT_DIR.DESC && (
+                    <i className="bi bi-arrow-down" />
+                  )}
+                  {sortProps.dir === SORT_DIR.ASC && (
+                    <i className="bi bi-arrow-up" />
+                  )}
+                  {sortProps.dir === "" && (
+                    <i className="bi bi-arrow-down-up" />
+                  )}
+                </>
+              )}
             </th>
           );
         }
