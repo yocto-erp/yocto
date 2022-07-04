@@ -1,6 +1,7 @@
 import styles from "./btn-create.module.scss";
 import { ButtonHTMLAttributes, MouseEventHandler } from "react";
 import clsx from "clsx";
+import BtnLoading from "../btn-loading/btn-loading";
 
 /* eslint-disable-next-line */
 export interface BtnCreateProps extends ButtonHTMLAttributes<any> {
@@ -19,22 +20,16 @@ export function BtnCreate({
   ...props
 }: BtnCreateProps) {
   return (
-    <button
-      disabled={disabled || isLoading}
+    <BtnLoading
       {...props}
-      className={clsx("btn", className)}
+      disabled={disabled}
+      className={className}
       onClick={onClick}
-      type={props.type || "button"}
+      isLoading={isLoading}
+      icon={<i className="bi bi-plus" />}
     >
-      {isLoading ? (
-        <div className="spinner-border spinner-border-sm" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      ) : (
-        <i className="bi bi-plus" />
-      )}{" "}
-      <span>{children}</span>
-    </button>
+      {children}
+    </BtnLoading>
   );
 }
 
