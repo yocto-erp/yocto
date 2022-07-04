@@ -100,7 +100,7 @@ export function YoTableHeader<ROW>({
           <button
             type="button"
             className="btn btn-link text-success btn-sm"
-            style={{ padding: "2px" }}
+            style={{ padding: "2px", marginRight: "2px" }}
             onClick={() => toggleAllItem(TABLE_SELECT_TYPE.ALL)}
           >
             ALL
@@ -110,7 +110,7 @@ export function YoTableHeader<ROW>({
             type="button"
             color="link"
             className="btn text-danger btn-link btn-sm"
-            style={{ padding: "2px" }}
+            style={{ padding: "2px", marginLeft: "2px" }}
             onClick={() => toggleAllItem(TABLE_SELECT_TYPE.NONE)}
           >
             NONE
