@@ -195,7 +195,7 @@ export function YoTable<F, ROW extends BaseRow>({
       size: tableState.search.size * tableState.search.page,
     };
     dispatch(loadStart());
-    props.fetchData(newSearch).then(
+    props.fetchData(tableState.search).then(
       (t) => {
         dispatch(actionRefresh(t));
       },
@@ -206,9 +206,14 @@ export function YoTable<F, ROW extends BaseRow>({
   }, [tableState, dispatch, props.fetchData]);
 
   const selectItems = useMemo(() => {
-    let rs: any[] = [];
+    const rs: any[] = [];
     if (tableState.selects) {
-      rs = Object.keys(tableState.selects).filter(t => tableState.selects && !!tableState.selects[t]);
+      const keys = Object.keys(tableState.selects);
+      for(let i = 0; i < keys.length; i+=1){
+        if(tableState.selects[keys[i]]){
+          rs.push(tableState.selects[keys[i]])
+        }
+      }
     }
     return rs;
   }, [tableState]);
@@ -223,7 +228,7 @@ export function YoTable<F, ROW extends BaseRow>({
       toggleAllItem,
       onSearch,
       onRefresh,
-      selectItems
+      selectItems,
     }),
     [
       onSort,
@@ -234,7 +239,7 @@ export function YoTable<F, ROW extends BaseRow>({
       toggleAllItem,
       onSearch,
       onRefresh,
-      selectItems
+      selectItems,
     ]
   );
 

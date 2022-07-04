@@ -49,9 +49,6 @@ export function YoTableBody<ROW extends BaseRow>({
                   id={_rowId(row)}
                   value="1"
                   aria-label="..."
-                  defaultChecked={
-                    isItemSelect(index)
-                  }
                   checked={
                     isItemSelect(index)
                   }

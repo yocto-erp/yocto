@@ -65,7 +65,13 @@ export interface REDUCE_ACTION<F, ROW extends BaseRow> {
 
 export const LIST_PAGE_SIZE = [10, 20, 50, 100];
 
+export enum PAGING_TYPE {
+  PAGING = 1,
+  LOAD_MORE = 2
+}
+
 export interface TableState<F, R> {
+  pagingType: PAGING_TYPE;
   state: API_STATE;
   selects?: Record<string, any>;
   errors?: Array<ApiError>;
@@ -78,6 +84,7 @@ export function initialTableState<F, R>(
   sorts?: TableSortType
 ): TableState<F, R> {
   return {
+    pagingType: PAGING_TYPE.PAGING,
     errors: [],
     state: API_STATE.PENDING,
     search: {
