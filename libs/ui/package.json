@@ -17,7 +17,8 @@
     "react-bootstrap": "^2.4.0",
     "clsx": "^1.1.1",
     "bootstrap-icons": "^1.8.3",
-    "qs": "^6.11.0"
+    "qs": "^6.11.0",
+    "lodash": "^4.17.21"
   },
   "lang": "ui",
   "supportedLocales": ["en", "vi", "ja", "ko"]
