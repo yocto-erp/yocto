@@ -27,11 +27,12 @@ const SORT_ORDER = [SORT_DIR.ASC, SORT_DIR.DESC, ""];
  * @constructor
  */
 export function YoTableHeader<ROW>({
-  onSort,
   columns,
   enableSelectColumn,
 }: YoTableHeaderProps<ROW>) {
   const tableState = useListStateContext();
+  const { onSort } = useListActionContext();
+
   const onSortClick = React.useCallback(
     (name: string) => {
       console.log(name);

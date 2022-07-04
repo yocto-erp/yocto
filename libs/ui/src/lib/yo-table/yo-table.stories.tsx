@@ -1,11 +1,17 @@
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 import {YoTable, YoTableProps} from './yo-table';
 import {BaseRow, SORT_DIR} from "./models";
-import {ApiError} from "../api";
+import {YoTableBody} from "./yo-table-body"
+import {YoTableHeader} from "./yo-table-header"
+import {YoTablePageSize} from "./yo-table-page-size"
+import {YoTablePaging} from "./yo-table-paging"
 
 export default {
   component: YoTable,
-  title: 'YoTable',
+  title: 'Table/YoTable',
+  subcomponents: {
+    YoTableBody, YoTableHeader, YoTablePageSize, YoTablePaging
+  }
 } as ComponentMeta<typeof YoTable>;
 
 interface ROW extends BaseRow {

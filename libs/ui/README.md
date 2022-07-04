@@ -2,6 +2,12 @@
 
 This library using for yoctoerp UI
 
+# Develop
+
+ - nx generate stories --project=ui
+ - nx g component my-component --project=ui --directory=folder
+ - nx g component form-row --project=ui --directory=form
+
 ## Install
 
 - yarn add @yoctoerp/ui

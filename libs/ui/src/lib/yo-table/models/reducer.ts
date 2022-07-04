@@ -6,12 +6,15 @@ import { API_STATE, ApiError } from "../../api";
 import { BaseRow, TableRowIdFn } from "./constants";
 
 const ListActionContext = createContext({
+  onSort: (name: string, sort: SORT_DIR | string) => console.log("onSort"),
   onChangePage: (page: number) => console.log("onChangePage", page),
   onChangeSize: (size: number) => console.log("onChangeSize", size),
   onSearch: (f: never) => console.log("onSearch", f),
   toggleAllItem: (index: number) => console.log("toggleAllItem", index),
   toggleItem: (index: number) => console.log("toggleAllItem", index),
   isItemSelect: (index: number): boolean => true,
+  onRefresh: () => console.log("OnRefresh"),
+  selectItems: [] as any[]
 });
 const ListStateContext = createContext({} as TableState<never, never>);
 
@@ -216,7 +219,7 @@ function reducerToggleItem<F, R extends BaseRow>(
   const index = action.data?.index;
   const rowId = action.data?.rowId;
 
-  if (index && state.data?.rows[index]) {
+  if (index !== undefined && state.data?.rows[index]) {
     const newState = { ...state };
     if (!newState.selects) {
       newState.selects = {};

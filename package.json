@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "story:ui": "NODE_OPTIONS=--openssl-legacy-provider nx run ui:storybook"
+    "story:ui": "NODE_OPTIONS=--openssl-legacy-provider nx run ui:storybook",
+    "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider nx run ui:build-storybook",
+    "chromatic": "npx chromatic --project-token=f1d6cebcc1b3"
   },
   "private": false,
-
   "dependencies": {
     "core-js": "^3.6.5",
     "react": "18.2.0",
@@ -59,6 +60,9 @@
     "ts-jest": "27.1.4",
     "ts-node": "~10.8.0",
     "typescript": "~4.7.2",
-    "url-loader": "^3.0.0"
-  }
+    "url-loader": "^3.0.0",
+    "chromatic": "^6.7.0"
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "yoctoerp@0.0.0"
 }

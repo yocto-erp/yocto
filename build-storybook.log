@@ -1,0 +1,51 @@
+
+> nx run ui:build-storybook --output-dir=/var/folders/mk/zzqv0vpd4cv726z8yp1v9wzh0000gn/T/chromatic--51052-qZmIoJWGX9yA
+
+
+>  NX  ui framework: @storybook/react
+
+
+>  NX  Storybook builder starting ...
+
+info => Cleaning outputDir: /Users/lecanh/Documents/Project/Vietnam/yocto/dist/storybook/ui
+info => Loading presets
+info => Compiling manager..
+info => Compiling preview..
+info Addon-docs: using MDX1
+info => Loading Nrwl React Storybook preset from "@nrwl/react/plugins/storybook"
+info => Using default Webpack5 setup
+info => Manager built (12 s)
+info => Preview built (14 s)
+WARN Module Warning (from ./node_modules/@nrwl/web/node_modules/postcss-loader/dist/cjs.js):
+WARN Warning
+WARN 
+WARN (6:30305) autoprefixer: Replace color-adjust to print-color-adjust. The color-adjust shorthand is currently deprecated.
+WARN asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+WARN This can impact web performance.
+WARN Assets: 
+WARN   273.7c381a55.iframe.bundle.js (592 KiB)
+WARN   566.e2839a2a.iframe.bundle.js (793 KiB)
+WARN   430.2c5798d4.iframe.bundle.js (2.88 MiB)
+WARN entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+WARN Entrypoints:
+WARN   main (2.92 MiB)
+WARN       runtime~main.4fa3de4f.iframe.bundle.js
+WARN       430.2c5798d4.iframe.bundle.js
+WARN       main.css
+WARN       main.ecaad48e.iframe.bundle.js
+WARN 
+info => Output directory: /Users/lecanh/Documents/Project/Vietnam/yocto/dist/storybook/ui
+
+>  NX  Storybook builder finished ...
+
+
+>  NX  Storybook files available in dist/storybook/ui
+
+
+ 
+
+ >  NX   Successfully ran target build-storybook for project ui
+
+
+   See Nx Cloud run details at https://nx.app/runs/ZzSaAS7aORj
+

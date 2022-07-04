@@ -31,7 +31,8 @@ import {
   tableReducer,
   TableState,
   actionToggleItem,
-  actionOnSearch, actionRefresh,
+  actionOnSearch,
+  actionRefresh,
 } from "./models/reducer";
 import YoTablePaging from "./yo-table-paging";
 import YoTablePageSize from "./yo-table-page-size";
@@ -187,25 +188,30 @@ export function YoTable<F, ROW extends BaseRow>({
     [tableState, dispatch, props.fetchData]
   );
 
-  const onRefresh = useCallback(
-    () => {
-      const newSearch = {
-        ...tableState.search,
-        page: 1,
-        size: tableState.data?.count || tableState.search.size,
-      };
-      dispatch(loadStart());
-      props.fetchData(newSearch).then(
-        (t) => {
-          dispatch(actionRefresh(t));
-        },
-        (err: any) => {
-          dispatch(loadFail(err.errors));
-        }
-      );
-    },
-    [tableState, dispatch, props.fetchData]
-  );
+  const onRefresh = useCallback(() => {
+    const newSearch = {
+      ...tableState.search,
+      page: 1,
+      size: tableState.search.size * tableState.search.page,
+    };
+    dispatch(loadStart());
+    props.fetchData(newSearch).then(
+      (t) => {
+        dispatch(actionRefresh(t));
+      },
+      (err: any) => {
+        dispatch(loadFail(err.errors));
+      }
+    );
+  }, [tableState, dispatch, props.fetchData]);
+
+  const selectItems = useMemo(() => {
+    let rs: any[] = [];
+    if (tableState.selects) {
+      rs = Object.keys(tableState.selects).filter(t => tableState.selects && !!tableState.selects[t]);
+    }
+    return rs;
+  }, [tableState]);
 
   const actionContext = useMemo(
     () => ({
@@ -214,7 +220,10 @@ export function YoTable<F, ROW extends BaseRow>({
       onChangeSize,
       isItemSelect,
       toggleItem,
-      toggleAllItem, onSearch, onRefresh
+      toggleAllItem,
+      onSearch,
+      onRefresh,
+      selectItems
     }),
     [
       onSort,
@@ -222,14 +231,15 @@ export function YoTable<F, ROW extends BaseRow>({
       onChangeSize,
       isItemSelect,
       toggleItem,
-      toggleAllItem, onSearch, onRefresh
+      toggleAllItem,
+      onSearch,
+      onRefresh,
+      selectItems
     ]
   );
 
   return (
-    <ListActionProvider
-      value={actionContext}
-    >
+    <ListActionProvider value={actionContext}>
       <ListStateProvider value={tableState as never}>
         {props.children}
         {tableState.state === API_STATE.FAIL && (
@@ -267,7 +277,7 @@ export function YoTable<F, ROW extends BaseRow>({
             </tbody>
           </table>
         </div>
-        <div className="w-100">
+        <div className="w-100 mt-2">
           <div className="row justify-content-center">
             <div className="col-md-6">
               <div className="mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
