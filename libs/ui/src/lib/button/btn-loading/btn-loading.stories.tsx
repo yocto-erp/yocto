@@ -3,7 +3,7 @@ import { BtnLoading } from "./btn-loading";
 
 export default {
   component: BtnLoading,
-  title: "Button/BtnLoading",
+  title: "Button/Loading",
 } as ComponentMeta<typeof BtnLoading>;
 
 const Template: ComponentStory<typeof BtnLoading> = (args) => (
@@ -11,8 +11,8 @@ const Template: ComponentStory<typeof BtnLoading> = (args) => (
 );
 
 const icon = <i className="bi bi-alarm-fill" />;
-export const Primary = Template.bind({});
-Primary.args = {
+export const Loading = Template.bind({});
+Loading.args = {
   isLoading: true,
   children: "Loading",
   icon: icon,
