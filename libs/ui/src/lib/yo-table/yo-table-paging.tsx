@@ -5,16 +5,22 @@ import clsx from "clsx";
 
 const MAX = 5;
 
+enum PAGE_TYPE {
+  NORMAL = 1,
+  BREAK,
+}
+
 export function YoTablePaging() {
   const tableState = useListStateContext();
   const { onChangePage } = useListActionContext();
 
+  const totalPages = Math.ceil(
+    (tableState.data?.count || 0) / tableState.search.size
+  );
+
   const isDisabled = tableState.state === API_STATE.LOADING;
   const rs = useMemo(() => {
     let pages: Array<{ page: number; type: number }> = [];
-
-    const total = tableState.data?.count || 0;
-    const totalPages = Math.ceil(total / tableState.search.size);
     const currentPage = tableState.search.page;
 
     let start = 0;
@@ -77,6 +83,20 @@ export function YoTablePaging() {
   return (
     <nav aria-label="Page navigation" className="mb-2 mb-md-0">
       <ul className="pagination mb-0 pagination-sm justify-content-md-end justify-content-center">
+        <li
+          className={clsx("page-item", {
+            disabled: tableState.search.page === 1,
+          })}
+          key="previous"
+        >
+          <button
+            className="page-link btn-link btm-sm"
+            disabled={isDisabled || tableState.search.page === 1}
+            onClick={() => onChangePage(tableState.search.page - 1)}
+          >
+            <i className="bi bi-chevron-left"/>
+          </button>
+        </li>
         {rs.map((item) => (
           <li
             className={clsx("page-item", {
@@ -106,6 +126,20 @@ export function YoTablePaging() {
             )}
           </li>
         ))}
+        <li
+          className={clsx("page-item", {
+            disabled: tableState.search.page === totalPages,
+          })}
+          key="next"
+        >
+          <button
+            className="page-link btn-link btm-sm"
+            disabled={isDisabled || tableState.search.page === totalPages}
+            onClick={() => onChangePage(tableState.search.page + 1)}
+          >
+            <i className="bi bi-chevron-right"/>
+          </button>
+        </li>
       </ul>
     </nav>
   );

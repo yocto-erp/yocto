@@ -23,7 +23,7 @@ interface FILTER {
   name: string
 }
 
-
+const totalRow = 10000
 const props: YoTableProps<FILTER, ROW> = {
   columns: [
     {header: 'ID', data: 'id', sort: true},
@@ -34,7 +34,7 @@ const props: YoTableProps<FILTER, ROW> = {
     const data: ROW[] = [];
     for (let i = 0; i < req.size; i += 1) {
       const index = (req.page - 1) * req.size;
-      if (index + i < 100) {
+      if (index + i < totalRow) {
         data.push({
           id: index + (req?.sorts?.['id'] === SORT_DIR.DESC ? (req.size - i) : i),
           name: "Le Phuoc Canh " + index,
@@ -51,9 +51,9 @@ const props: YoTableProps<FILTER, ROW> = {
     })
      */
     setTimeout(() => res({
-      count: 100,
+      count: totalRow,
       rows: data
-    }), 1000)
+    }), 100)
 
   })
 };
