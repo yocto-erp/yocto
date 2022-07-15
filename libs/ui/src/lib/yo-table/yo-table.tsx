@@ -33,6 +33,7 @@ import {
   actionToggleItem,
   actionOnSearch,
   actionRefresh,
+  actionRemoveItems,
 } from "./models/reducer";
 import YoTablePaging from "./yo-table-paging";
 import YoTablePageSize from "./yo-table-page-size";
@@ -49,6 +50,7 @@ export interface YoTableProps<F, ROW extends BaseRow> {
   color?: TABLE_COLOR;
   children?: React.ReactNode;
   enableSelectColumn?: boolean;
+  wrapperClass?: string;
 }
 
 export function YoTable<F, ROW extends BaseRow>({
@@ -168,6 +170,13 @@ export function YoTable<F, ROW extends BaseRow>({
     [props.rowId, dispatch]
   );
 
+  const removeItems = useCallback(
+    (items: Array<ROW>) => {
+      dispatch(actionRemoveItems(items, props.rowId));
+    },
+    [props.rowId, dispatch]
+  );
+
   const onSearch = useCallback(
     (filter: F) => {
       const newSearch = {
@@ -189,6 +198,8 @@ export function YoTable<F, ROW extends BaseRow>({
   );
 
   const onRefresh = useCallback(() => {
+    // This newSearch using in case Load More
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const newSearch = {
       ...tableState.search,
       page: 1,
@@ -209,9 +220,9 @@ export function YoTable<F, ROW extends BaseRow>({
     const rs: any[] = [];
     if (tableState.selects) {
       const keys = Object.keys(tableState.selects);
-      for(let i = 0; i < keys.length; i+=1){
-        if(tableState.selects[keys[i]]){
-          rs.push(tableState.selects[keys[i]])
+      for (let i = 0; i < keys.length; i += 1) {
+        if (tableState.selects[keys[i]]) {
+          rs.push(tableState.selects[keys[i]]);
         }
       }
     }
@@ -229,6 +240,7 @@ export function YoTable<F, ROW extends BaseRow>({
       onSearch,
       onRefresh,
       selectItems,
+      removeItems,
     }),
     [
       onSort,
@@ -240,6 +252,7 @@ export function YoTable<F, ROW extends BaseRow>({
       onSearch,
       onRefresh,
       selectItems,
+      removeItems,
     ]
   );
 
@@ -259,7 +272,7 @@ export function YoTable<F, ROW extends BaseRow>({
             </ul>
           </div>
         )}
-        <div className={["table-responsive", styles["my-table"]].join(" ")}>
+        <div className={clsx("table-responsive", styles["my-table"], props.wrapperClass)}>
           <table
             className={clsx(
               className,

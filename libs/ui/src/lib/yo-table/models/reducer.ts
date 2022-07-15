@@ -14,7 +14,8 @@ const ListActionContext = createContext({
   toggleItem: (index: number) => console.log("toggleAllItem", index),
   isItemSelect: (index: number): boolean => true,
   onRefresh: () => console.log("OnRefresh"),
-  selectItems: [] as any[]
+  selectItems: [] as any[],
+  removeItems: (items: any[]) => console.log("OnRemoveItems")
 });
 const ListStateContext = createContext({} as TableState<never, never>);
 
@@ -40,6 +41,7 @@ enum ACTION {
   LOAD_FAIL = "LOAD_FAIL",
   SELECT_ITEM = "SELECT_ITEM",
   SELECT_ALL_NONE = "SELECT_ALL_NONE",
+  REMOVE_ITEMS = "REMOVE_ITEMS",
 }
 
 export enum TABLE_SELECT_TYPE {
@@ -60,6 +62,7 @@ export interface REDUCE_ACTION<F, ROW extends BaseRow> {
     index?: number;
     rowId?: TableRowIdFn<ROW>;
     selectType?: TABLE_SELECT_TYPE;
+    removeItems?: Array<ROW> | null;
   };
 }
 
@@ -67,7 +70,7 @@ export const LIST_PAGE_SIZE = [10, 20, 50, 100];
 
 export enum PAGING_TYPE {
   PAGING = 1,
-  LOAD_MORE = 2
+  LOAD_MORE = 2,
 }
 
 export interface TableState<F, R> {
@@ -219,6 +222,44 @@ export function actionOnSearch<F, R extends BaseRow>(
   };
 }
 
+export function actionRemoveItems<F, R extends BaseRow>(
+  data: Array<R>,
+  rowId?: TableRowIdFn<R>
+): REDUCE_ACTION<F, R> {
+  return {
+    type: ACTION.SEARCH,
+    data: {
+      removeItems: data,
+      rowId
+    },
+  };
+}
+
+
+
+function reducerRemoveItems<F, R extends BaseRow>(
+  state: TableState<F, R>,
+  action: REDUCE_ACTION<F, R>
+): TableState<F, R> {
+  const removeItems = action.data?.removeItems ?? [];
+  const rowId = action.data?.rowId;
+  if (removeItems.length) {
+    const newState = { ...state };
+    removeItems.forEach((item) => {
+      let _rowId;
+      if (rowId) {
+        _rowId = rowId(item);
+      } else {
+        _rowId = item.id;
+      }
+      newState.selects?.[_rowId] && delete newState.selects[_rowId];
+    });
+    return newState;
+  }
+
+  return state;
+}
+
 function reducerToggleItem<F, R extends BaseRow>(
   state: TableState<F, R>,
   action: REDUCE_ACTION<F, R>
@@ -343,6 +384,8 @@ export const tableReducer = <F, R extends BaseRow>(
       return reducerToggleItem(state, action);
     case ACTION.SELECT_ALL_NONE:
       return reducerToggleAllNone(state, action);
+    case ACTION.REMOVE_ITEMS:
+      return reducerRemoveItems(state, action);
     default:
       return state;
   }
