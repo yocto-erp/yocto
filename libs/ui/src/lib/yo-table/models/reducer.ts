@@ -15,7 +15,7 @@ const ListActionContext = createContext({
   isItemSelect: (index: number): boolean => true,
   onRefresh: () => console.log("OnRefresh"),
   selectItems: [] as any[],
-  removeItems: (items: any[]) => console.log("OnRemoveItems")
+  removeItems: (items: any[]) => console.log("OnRemoveItems"),
 });
 const ListStateContext = createContext({} as TableState<never, never>);
 
@@ -227,15 +227,13 @@ export function actionRemoveItems<F, R extends BaseRow>(
   rowId?: TableRowIdFn<R>
 ): REDUCE_ACTION<F, R> {
   return {
-    type: ACTION.SEARCH,
+    type: ACTION.REMOVE_ITEMS,
     data: {
       removeItems: data,
-      rowId
+      rowId,
     },
   };
 }
-
-
 
 function reducerRemoveItems<F, R extends BaseRow>(
   state: TableState<F, R>,
