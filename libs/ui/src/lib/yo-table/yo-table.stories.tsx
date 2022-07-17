@@ -67,5 +67,6 @@ Primary.args = {
   columns: props.columns,
   fetchData: props.fetchData,
   enableSelectColumn: true,
-  rowId: (row) => `abc${row.id}`
+  rowId: (row) => `abc${row.id}`,
+  initSort: {"id": SORT_DIR.DESC}
 };

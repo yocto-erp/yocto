@@ -65,7 +65,14 @@ export function YoTable<F, ROW extends BaseRow>({
       action: REDUCE_ACTION<F, ROW>
     ) => TableState<F, ROW>,
     any
-  >(tableReducer, null, initialTableState);
+  >(
+    tableReducer,
+    {
+      filter: props.initFilter,
+      sorts: props.initSort,
+    },
+    initialTableState
+  );
 
   const loadData = useCallback(
     (search: SearchRequest<F>) => {
@@ -272,7 +279,13 @@ export function YoTable<F, ROW extends BaseRow>({
             </ul>
           </div>
         )}
-        <div className={clsx("table-responsive", styles["my-table"], props.wrapperClass)}>
+        <div
+          className={clsx(
+            "table-responsive",
+            styles["my-table"],
+            props.wrapperClass
+          )}
+        >
           <table
             className={clsx(
               className,

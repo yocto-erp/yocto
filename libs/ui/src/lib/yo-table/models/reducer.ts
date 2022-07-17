@@ -82,10 +82,15 @@ export interface TableState<F, R> {
   data?: SearchResponse<R> | null;
 }
 
-export function initialTableState<F, R>(
-  filter?: F,
-  sorts?: TableSortType
-): TableState<F, R> {
+export interface InitTableStateProps<F> {
+  filter?: F;
+  sorts?: TableSortType;
+}
+
+export function initialTableState<F, R>({
+  filter,
+  sorts,
+}: InitTableStateProps<F>): TableState<F, R> {
   return {
     pagingType: PAGING_TYPE.PAGING,
     errors: [],
