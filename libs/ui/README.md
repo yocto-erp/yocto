@@ -6,6 +6,7 @@ This library using for yoctoerp UI
 
  - nx generate stories --project=ui
  - nx g component my-component --project=ui --directory=folder
+ - nx g component form-control --project=ui --directory=lib/form
  - nx g component form-row --project=ui --directory=lib/form
  - nx publish ui --ver=0.0.5 --tag=latest
 ## Install

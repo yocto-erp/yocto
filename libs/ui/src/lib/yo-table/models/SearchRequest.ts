@@ -1,6 +1,6 @@
 import { TableSortType } from './Sort';
 
-export type FilterType = Record<string, never>;
+export type FilterType = Record<string, any>;
 
 export interface SearchRequest<T> {
   page: number;
