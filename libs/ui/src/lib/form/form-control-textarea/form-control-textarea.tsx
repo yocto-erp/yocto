@@ -1,13 +1,29 @@
-import { FormControlInputProps } from "../constants";
-import FormControl from "../form-control/form-control";
-import { forwardRef } from "react";
+import {
+  ChangeEventHandler,
+  FocusEventHandler,
+  forwardRef,
+  HTMLInputTypeAttribute,
+} from "react";
 import { hasText } from "../../util";
+import FormControl from "../form-control/form-control";
 import clsx from "clsx";
 import FormError from "../form-error/form-error";
+import { FORM_ROW_SIZE, FormControlInputProps } from "../constants";
 
-const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
+export interface FormControlTextareaProps extends FormControlInputProps {
+  rows?: number;
+}
+
+const FormControlTextarea = forwardRef<
+  HTMLTextAreaElement,
+  FormControlTextareaProps
+>(
   (
-    { inputClass = "", size, ...props }: FormControlInputProps,
+    {
+      inputClass = "",
+      size = FORM_ROW_SIZE.MEDIUM,
+      ...props
+    }: FormControlTextareaProps,
     ref
   ) => {
     return (
@@ -16,14 +32,14 @@ const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
         className={props.className}
         required={props.required}
       >
-        <input
-          type={props.type}
+        <textarea
+          rows={props.rows}
+          readOnly={props.readOnly}
           disabled={props.disabled}
           ref={ref}
           className={clsx("form-control", inputClass, `form-control-${size}`, {
             "is-invalid": hasText(props.error),
           })}
-          readOnly={props.readOnly}
           onChange={props.onChange}
           name={props.name}
           onBlur={props.onBlur}
@@ -35,4 +51,4 @@ const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
   }
 );
 
-export default FormControlInput;
+export default FormControlTextarea;

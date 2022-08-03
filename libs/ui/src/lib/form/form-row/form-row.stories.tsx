@@ -1,20 +1,20 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { FormRow } from "./form-row";
+import MyElement from "./form-row";
 
 export default {
-  component: FormRow,
+  component: MyElement,
   title: "Form/FormRow",
-} as ComponentMeta<typeof FormRow>;
+} as ComponentMeta<typeof MyElement>;
 
-const Template: ComponentStory<typeof FormRow> = (args) => (
-  <FormRow {...args}>
-    <input className="form-control" type="text"/>
-  </FormRow>
+const Template: ComponentStory<typeof MyElement> = (args) => (
+  <MyElement {...args}>
+    <input className="form-control" type="text" />
+  </MyElement>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const FormRow = Template.bind({});
+FormRow.args = {
   label: "Test",
   labelCol: 2,
-  valueCol: 8
+  valueCol: 8,
 };

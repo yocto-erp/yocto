@@ -1,31 +1,22 @@
-import styles from "./form-row.module.scss";
-import { hasText } from "../../util/string.util";
+import { hasText } from "../../util";
 import clsx from "clsx";
+import {FORM_ROW_SIZE, FormRowProps} from "../constants";
 
-/* eslint-disable-next-line */
-export interface FormRowProps {
-  labelCol?: number;
-  valueCol?: number;
-  label: React.ReactNode;
-  htmlFor?: string;
-  required?: boolean;
-  children?: React.ReactNode;
-}
-
-export function FormRow({
+function FormRow({
   htmlFor,
   labelCol = 3,
   valueCol = 9,
   label,
   children,
   required,
+  size = FORM_ROW_SIZE.MEDIUM
 }: FormRowProps) {
   let els;
   if (hasText(label)) {
     els = (
       <>
         <label
-          className={`col-sm-${labelCol} col-form-label fs-6 fw-bolder text-dark`}
+          className={`col-sm-${labelCol} col-form-label col-form-label-${size}`}
           htmlFor={htmlFor}
         >
           {label} {required ? <span className={clsx("required")}></span> : ""}

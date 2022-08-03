@@ -1,5 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import MyFormControl from "./form-control";
+import {FORM_ROW_SIZE} from "../constants";
 
 export default {
   component: MyFormControl,
@@ -15,5 +16,5 @@ const Template: ComponentStory<typeof MyFormControl> = (args) => (
 export const FormControl = Template.bind({});
 FormControl.args = {
   label: "Test",
-  required: false
+  required: false,
 };

@@ -1,20 +1,20 @@
-import clsx from "clsx";
-import { hasText } from "../../util";
-import FormControl from "../form-control/form-control";
-import {FORM_ROW_SIZE, FormControlSelectProps} from "../constants";
 import { forwardRef } from "react";
+import {FORM_ROW_SIZE, FormRowSelectProps} from "../constants";
+import { hasText } from "../../util";
+import FormRow from "../form-row/form-row";
+import clsx from "clsx";
 import FormError from "../form-error/form-error";
 
-const FormControlSelect = forwardRef<HTMLSelectElement, FormControlSelectProps>(
-  (
-    { inputClass = "", size = FORM_ROW_SIZE.MEDIUM, ...props }: FormControlSelectProps,
-    ref
-  ) => {
+const FormRowSelect = forwardRef<HTMLSelectElement, FormRowSelectProps>(
+  ({ inputClass = "", size = FORM_ROW_SIZE.MEDIUM, ...props }: FormRowSelectProps, ref) => {
     return (
-      <FormControl
+      <FormRow
         label={props.label}
-        className={props.className}
         required={props.required}
+        htmlFor={props.htmlFor}
+        labelCol={props.labelCol}
+        valueCol={props.valueCol}
+        size={size}
       >
         <select
           disabled={props.disabled}
@@ -34,9 +34,9 @@ const FormControlSelect = forwardRef<HTMLSelectElement, FormControlSelectProps>(
           ))}
         </select>
         <FormError message={props.error} />
-      </FormControl>
+      </FormRow>
     );
   }
 );
 
-export default FormControlSelect;
+export default FormRowSelect;

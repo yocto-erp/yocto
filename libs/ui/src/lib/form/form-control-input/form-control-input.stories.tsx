@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import MyElement from "./form-control-input";
 import { useEffect, useState } from "react";
+import {FORM_ROW_SIZE} from "../constants";
 
 export default {
   component: MyElement,
@@ -29,4 +30,5 @@ FormControlInput.args = {
   type: "text",
   error: "testing error",
   value: "124",
+  size: FORM_ROW_SIZE.SMALL
 };

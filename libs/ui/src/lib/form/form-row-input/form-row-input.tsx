@@ -1,20 +1,27 @@
-import { FormControlInputProps } from "../constants";
-import FormControl from "../form-control/form-control";
+import { FORM_ROW_SIZE, FormRowInputProps } from "../constants";
 import { forwardRef } from "react";
-import { hasText } from "../../util";
 import clsx from "clsx";
+import { hasText } from "../../util";
 import FormError from "../form-error/form-error";
+import FormRow from "../form-row/form-row";
 
-const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
+const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
   (
-    { inputClass = "", size, ...props }: FormControlInputProps,
+    {
+      inputClass = "",
+      size = FORM_ROW_SIZE.MEDIUM,
+      ...props
+    }: FormRowInputProps,
     ref
   ) => {
     return (
-      <FormControl
+      <FormRow
         label={props.label}
-        className={props.className}
         required={props.required}
+        htmlFor={props.htmlFor}
+        labelCol={props.labelCol}
+        valueCol={props.valueCol}
+        size={size}
       >
         <input
           type={props.type}
@@ -30,9 +37,9 @@ const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
           value={props.value}
         />
         <FormError message={props.error} />
-      </FormControl>
+      </FormRow>
     );
   }
 );
 
-export default FormControlInput;
+export default FormRowInput;
