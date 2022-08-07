@@ -9,7 +9,7 @@ export interface FormRowTextareaProps extends FormRowInputProps {
   rows?: number;
 }
 
-const FormRowTextarea = forwardRef<HTMLTextAreaElement, FormRowTextareaProps>(
+export const FormRowTextarea = forwardRef<HTMLTextAreaElement, FormRowTextareaProps>(
   (
     {
       inputClass = "",

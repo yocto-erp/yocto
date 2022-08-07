@@ -2,7 +2,7 @@ import { hasText } from "../../util";
 import clsx from "clsx";
 import {FORM_ROW_SIZE, FormRowProps} from "../constants";
 
-function FormRow({
+export function FormRow({
   htmlFor,
   labelCol = 3,
   valueCol = 9,

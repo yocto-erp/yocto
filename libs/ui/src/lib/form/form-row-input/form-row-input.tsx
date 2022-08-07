@@ -5,7 +5,7 @@ import { hasText } from "../../util";
 import FormError from "../form-error/form-error";
 import FormRow from "../form-row/form-row";
 
-const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
+export const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
   (
     {
       inputClass = "",

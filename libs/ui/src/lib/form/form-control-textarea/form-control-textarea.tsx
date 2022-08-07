@@ -1,8 +1,5 @@
 import {
-  ChangeEventHandler,
-  FocusEventHandler,
   forwardRef,
-  HTMLInputTypeAttribute,
 } from "react";
 import { hasText } from "../../util";
 import FormControl from "../form-control/form-control";
@@ -14,7 +11,7 @@ export interface FormControlTextareaProps extends FormControlInputProps {
   rows?: number;
 }
 
-const FormControlTextarea = forwardRef<
+export const FormControlTextarea = forwardRef<
   HTMLTextAreaElement,
   FormControlTextareaProps
 >(

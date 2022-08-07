@@ -5,7 +5,7 @@
   "scripts": {
     "story:ui": "NODE_OPTIONS=--openssl-legacy-provider nx run ui:storybook",
     "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider nx run ui:build-storybook",
-    "chromatic": "npx chromatic --project-token=f1d6cebcc1b3"
+    "chromatic": "npx chromatic --project-token=f1d6cebcc1b3 --exit-zero-on-changes --auto-accept-changes"
   },
   "private": false,
   "dependencies": {

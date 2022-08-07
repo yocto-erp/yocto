@@ -5,7 +5,7 @@ import FormRow from "../form-row/form-row";
 import clsx from "clsx";
 import FormError from "../form-error/form-error";
 
-const FormRowSelect = forwardRef<HTMLSelectElement, FormRowSelectProps>(
+export const FormRowSelect = forwardRef<HTMLSelectElement, FormRowSelectProps>(
   ({ inputClass = "", size = FORM_ROW_SIZE.MEDIUM, ...props }: FormRowSelectProps, ref) => {
     return (
       <FormRow

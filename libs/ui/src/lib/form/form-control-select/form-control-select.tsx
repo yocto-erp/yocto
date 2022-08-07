@@ -5,7 +5,7 @@ import {FORM_ROW_SIZE, FormControlSelectProps} from "../constants";
 import { forwardRef } from "react";
 import FormError from "../form-error/form-error";
 
-const FormControlSelect = forwardRef<HTMLSelectElement, FormControlSelectProps>(
+export const FormControlSelect = forwardRef<HTMLSelectElement, FormControlSelectProps>(
   (
     { inputClass = "", size = FORM_ROW_SIZE.MEDIUM, ...props }: FormControlSelectProps,
     ref

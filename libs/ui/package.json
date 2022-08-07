@@ -1,6 +1,6 @@
 {
   "name": "@yoctoerp/ui",
-  "version": "0.0.15",
+  "version": "0.0.18",
   "author": {
     "email": "lephuoccanh@gmail.com",
     "name": "Le Phuoc Canh"
@@ -10,7 +10,7 @@
     "url": "https://github.com/yocto-erp/yocto"
   },
   "scripts": {
-    "chromatic": "chromatic"
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
     "bootstrap": "^5.2.0-beta1",
