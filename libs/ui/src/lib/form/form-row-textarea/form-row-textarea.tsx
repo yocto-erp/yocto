@@ -32,6 +32,7 @@ export const FormRowTextarea = forwardRef<HTMLTextAreaElement, FormRowTextareaPr
           readOnly={props.readOnly}
           disabled={props.disabled}
           ref={ref}
+          placeholder={props.placeholder}
           className={clsx("form-control", inputClass, `form-control-${size}`, {
             "is-invalid": hasText(props.error),
           })}

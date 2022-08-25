@@ -5,7 +5,7 @@ import { hasText } from "../../util";
 import clsx from "clsx";
 import FormError from "../form-error/form-error";
 
-const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
+export const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
   (
     { inputClass = "", size, ...props }: FormControlInputProps,
     ref
@@ -23,6 +23,7 @@ const FormControlInput = forwardRef<HTMLInputElement, FormControlInputProps>(
           className={clsx("form-control", inputClass, `form-control-${size}`, {
             "is-invalid": hasText(props.error),
           })}
+          placeholder={props.placeholder}
           readOnly={props.readOnly}
           onChange={props.onChange}
           name={props.name}

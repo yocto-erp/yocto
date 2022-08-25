@@ -30,6 +30,7 @@ export const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
           className={clsx("form-control", inputClass, `form-control-${size}`, {
             "is-invalid": hasText(props.error),
           })}
+          placeholder={props.placeholder}
           readOnly={props.readOnly}
           onChange={props.onChange}
           name={props.name}

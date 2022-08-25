@@ -10,7 +10,7 @@ export interface FormControlProps {
   children?: React.ReactNode;
   className?: string;
   htmlFor?: string;
-  size?: FORM_ROW_SIZE
+  size?: FORM_ROW_SIZE;
 }
 
 export interface FormControlInputProps extends FormControlProps {
@@ -19,6 +19,7 @@ export interface FormControlInputProps extends FormControlProps {
   readOnly?: boolean | undefined;
   onChange?: ChangeEventHandler;
   onBlur?: FocusEventHandler;
+  placeholder?: string;
   name: string;
   value?: string;
   disabled?: boolean;
@@ -41,7 +42,7 @@ export interface FormRowProps {
   htmlFor?: string;
   required?: boolean;
   children?: React.ReactNode;
-  size?: FORM_ROW_SIZE
+  size?: FORM_ROW_SIZE;
 }
 
 export enum FORM_ROW_SIZE {
@@ -57,6 +58,7 @@ export interface FormRowInputProps extends FormRowProps {
   onChange?: ChangeEventHandler;
   onBlur?: FocusEventHandler;
   name: string;
+  placeholder?: string;
   value?: string;
   disabled?: boolean;
   error?: string;
