@@ -43,6 +43,7 @@ export const FormControlTextarea = forwardRef<
           onBlur={props.onBlur}
           value={props.value}
         />
+        {props.children}
         <FormError message={props.error} />
       </FormControl>
     );

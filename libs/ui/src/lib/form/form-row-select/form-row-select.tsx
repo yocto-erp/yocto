@@ -15,6 +15,7 @@ export const FormRowSelect = forwardRef<HTMLSelectElement, FormRowSelectProps>(
         labelCol={props.labelCol}
         valueCol={props.valueCol}
         size={size}
+        className={props.className}
       >
         <select
           disabled={props.disabled}
@@ -33,6 +34,7 @@ export const FormRowSelect = forwardRef<HTMLSelectElement, FormRowSelectProps>(
             </option>
           ))}
         </select>
+        {props.children}
         <FormError message={props.error} />
       </FormRow>
     );

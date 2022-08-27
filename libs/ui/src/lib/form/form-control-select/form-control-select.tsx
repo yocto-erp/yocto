@@ -33,6 +33,7 @@ export const FormControlSelect = forwardRef<HTMLSelectElement, FormControlSelect
             </option>
           ))}
         </select>
+        {props.children}
         <FormError message={props.error} />
       </FormControl>
     );

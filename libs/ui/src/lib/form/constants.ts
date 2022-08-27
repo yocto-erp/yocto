@@ -43,6 +43,7 @@ export interface FormRowProps {
   required?: boolean;
   children?: React.ReactNode;
   size?: FORM_ROW_SIZE;
+  className?: string;
 }
 
 export enum FORM_ROW_SIZE {

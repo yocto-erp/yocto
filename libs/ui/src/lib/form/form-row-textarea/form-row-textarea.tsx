@@ -25,6 +25,7 @@ export const FormRowTextarea = forwardRef<HTMLTextAreaElement, FormRowTextareaPr
         htmlFor={props.htmlFor}
         labelCol={props.labelCol}
         valueCol={props.valueCol}
+        className={props.className}
         size={size}
       >
         <textarea
@@ -41,6 +42,7 @@ export const FormRowTextarea = forwardRef<HTMLTextAreaElement, FormRowTextareaPr
           onBlur={props.onBlur}
           value={props.value}
         />
+        {props.children}
         <FormError message={props.error} />
       </FormRow>
     );

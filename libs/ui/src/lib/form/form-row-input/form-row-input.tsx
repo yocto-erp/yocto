@@ -21,6 +21,7 @@ export const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
         htmlFor={props.htmlFor}
         labelCol={props.labelCol}
         valueCol={props.valueCol}
+        className={props.className}
         size={size}
       >
         <input
@@ -37,6 +38,7 @@ export const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
           onBlur={props.onBlur}
           value={props.value}
         />
+        {props.children}
         <FormError message={props.error} />
       </FormRow>
     );

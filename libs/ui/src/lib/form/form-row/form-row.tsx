@@ -1,6 +1,6 @@
 import { hasText } from "../../util";
 import clsx from "clsx";
-import {FORM_ROW_SIZE, FormRowProps} from "../constants";
+import { FORM_ROW_SIZE, FormRowProps } from "../constants";
 
 export function FormRow({
   htmlFor,
@@ -9,7 +9,8 @@ export function FormRow({
   label,
   children,
   required,
-  size = FORM_ROW_SIZE.MEDIUM
+  size = FORM_ROW_SIZE.MEDIUM,
+  className = "align-items-center",
 }: FormRowProps) {
   let els;
   if (hasText(label)) {
@@ -27,7 +28,7 @@ export function FormRow({
   } else {
     els = children;
   }
-  return <div className="row align-items-center mb-3">{els}</div>;
+  return <div className={clsx("row  mb-3", className)}>{els}</div>;
 }
 
 export default FormRow;

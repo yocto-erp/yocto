@@ -30,6 +30,7 @@ export const FormControlInput = forwardRef<HTMLInputElement, FormControlInputPro
           onBlur={props.onBlur}
           value={props.value}
         />
+        {props.children}
         <FormError message={props.error} />
       </FormControl>
     );
