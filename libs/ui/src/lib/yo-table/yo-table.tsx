@@ -51,6 +51,7 @@ export interface YoTableProps<F, ROW extends BaseRow> {
   children?: React.ReactNode;
   enableSelectColumn?: boolean;
   wrapperClass?: string;
+  onSelectChange?: (rows: Array<ROW>) => void;
 }
 
 export function YoTable<F, ROW extends BaseRow>({
@@ -262,6 +263,12 @@ export function YoTable<F, ROW extends BaseRow>({
       removeItems,
     ]
   );
+
+  useEffect(() => {
+    if (props.onSelectChange) {
+      props.onSelectChange(selectItems);
+    }
+  }, [selectItems, props]);
 
   return (
     <ListActionProvider value={actionContext}>
