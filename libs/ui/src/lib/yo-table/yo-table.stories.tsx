@@ -28,6 +28,9 @@ const props: YoTableProps<FILTER, ROW> = {
   columns: [
     {header: 'ID', data: 'id', sort: true},
     {header: 'Name', data: 'name', sort: true},
+    {header: 'Age', data: 'age', sort: true, group: "info"},
+    {header: 'Birthday', data: 'birthday', sort: true, group: "info"},
+    {header: 'Phone', data: 'phone', sort: true, group: "info"},
   ],
   fetchData: (req) => new Promise((res, rej) => {
     console.log('fetchData', req)
@@ -38,7 +41,9 @@ const props: YoTableProps<FILTER, ROW> = {
         data.push({
           id: index + (req?.sorts?.['id'] === SORT_DIR.DESC ? (req.size - i) : i),
           name: "Le Phuoc Canh " + index,
-          phone: `8493813068${index}`
+          phone: `8493813068${i}`,
+          age: i,
+          birthday: `birthday${i}`
         })
       }
     }
@@ -68,5 +73,6 @@ Primary.args = {
   fetchData: props.fetchData,
   enableSelectColumn: true,
   rowId: (row) => `abc${row.id}`,
+  isShowPaging: true,
   initSort: {"id": SORT_DIR.DESC}
 };

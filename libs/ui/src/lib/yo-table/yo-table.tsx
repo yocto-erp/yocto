@@ -52,12 +52,14 @@ export interface YoTableProps<F, ROW extends BaseRow> {
   enableSelectColumn?: boolean;
   wrapperClass?: string;
   onSelectChange?: (rows: Array<ROW>) => void;
+  isShowPaging?: boolean;
 }
 
 export function YoTable<F, ROW extends BaseRow>({
   className = "table w-100 table-sm",
   color,
   enableSelectColumn = false,
+  isShowPaging = true,
   ...props
 }: YoTableProps<F, ROW>) {
   const [tableState, dispatch] = useReducer<
@@ -315,29 +317,31 @@ export function YoTable<F, ROW extends BaseRow>({
             </tbody>
           </table>
         </div>
-        <div className="w-100 mt-2">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-              <div className="mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
-                <YoTablePageSize />
-                Total: {tableState.data?.count || 0}
-                {tableState.state === API_STATE.LOADING ? (
-                  <Spinner
-                    size="sm"
-                    variant={color}
-                    className="ms-2 ml-auto"
-                    animation={"grow"}
-                  />
-                ) : (
-                  ""
-                )}
+        {isShowPaging && (
+          <div className="w-100 mt-2">
+            <div className="row justify-content-center">
+              <div className="col-md-6">
+                <div className="mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
+                  <YoTablePageSize />
+                  Total: {tableState.data?.count || 0}
+                  {tableState.state === API_STATE.LOADING ? (
+                    <Spinner
+                      size="sm"
+                      variant={color}
+                      className="ms-2 ml-auto"
+                      animation={"grow"}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6">
+                <YoTablePaging />
               </div>
             </div>
-            <div className="col-md-6">
-              <YoTablePaging />
-            </div>
           </div>
-        </div>
+        )}
       </ListStateProvider>
     </ListActionProvider>
   );

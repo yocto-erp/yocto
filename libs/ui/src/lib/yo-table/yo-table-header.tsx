@@ -1,5 +1,5 @@
 import { TableColumn, TableHeaderOnSelectAllFn } from "./models/constants";
-import React  from "react";
+import React, { useMemo } from "react";
 import { isString } from "lodash";
 import { SORT_DIR } from "./models/Sort";
 import {
@@ -8,6 +8,7 @@ import {
   useListStateContext,
 } from "./models/reducer";
 import { API_STATE } from "../api";
+import { hasText } from "../util/string.util";
 
 export interface YoTableHeaderProps<ROW> {
   onSort?: (name: string, sort: SORT_DIR | string) => void;
@@ -89,64 +90,138 @@ export function YoTableHeader<ROW>({
     [onSortClick, tableState]
   );
 
+  const groupColumn = useMemo(() => {
+    const rs: Array<{
+      name: string;
+      total: number;
+      id: number;
+    }> = [];
+    for (let i = 0; i < columns.length; i += 1) {
+      const { group, isShow } = columns[i];
+      if ((!isShow || isShow()) && hasText(group)) {
+        const item = rs.find((t) => t.name === group);
+        if (item) {
+          item.total += 1;
+        } else {
+          rs.push({ name: group || "", total: 1, id: i });
+        }
+      }
+    }
+    console.log(rs);
+    return rs;
+  }, [columns]);
+
   const { toggleAllItem } = useListActionContext();
 
   return (
-    <tr>
-      {enableSelectColumn ? (
-        <th className="min text-center">
-          Select
-          <br />
-          <button
-            type="button"
-            className="btn btn-link text-success btn-sm"
-            style={{ padding: "2px", marginRight: "2px" }}
-            onClick={() => toggleAllItem(TABLE_SELECT_TYPE.ALL)}
-          >
-            ALL
-          </button>
-          |
-          <button
-            type="button"
-            color="link"
-            className="btn text-danger btn-link btn-sm"
-            style={{ padding: "2px", marginLeft: "2px" }}
-            onClick={() => toggleAllItem(TABLE_SELECT_TYPE.NONE)}
-          >
-            NONE
-          </button>
-        </th>
-      ) : null}
-      {columns.map((item) => {
-        if (!item.isShow || item.isShow()) {
-          const sortProps = getSortProps(item);
-          return (
-            <th
-              key={item.data}
-              onClick={sortProps.onClick}
-              className={sortProps.className}
-              style={item.width ? { width: item.width } : {}}
+    <>
+      <tr>
+        {enableSelectColumn ? (
+          <th className="min text-center" rowSpan={groupColumn.length ? 2 : 1}>
+            Select
+            <br />
+            <button
+              type="button"
+              className="btn btn-link text-success btn-sm"
+              style={{ padding: "2px", marginRight: "2px" }}
+              onClick={() => toggleAllItem(TABLE_SELECT_TYPE.ALL)}
             >
-              {item.header}
-              {sortProps.isSort && (
-                <>
-                  {sortProps.dir === SORT_DIR.DESC && (
-                    <i className="bi bi-arrow-down" />
+              ALL
+            </button>
+            |
+            <button
+              type="button"
+              color="link"
+              className="btn text-danger btn-link btn-sm"
+              style={{ padding: "2px", marginLeft: "2px" }}
+              onClick={() => toggleAllItem(TABLE_SELECT_TYPE.NONE)}
+            >
+              NONE
+            </button>
+          </th>
+        ) : null}
+        {groupColumn.length
+          ? columns.map((item, i) => {
+              if (!item.isShow || item.isShow()) {
+                if (hasText(item.group)) {
+                  const groupItem = groupColumn.find((t) => t.id === i);
+                  if (groupItem) {
+                    return (
+                      <th
+                        key={groupItem.name}
+                        className="min-width text-center"
+                        colSpan={groupItem.total}
+                      >
+                        {groupItem.name}
+                      </th>
+                    );
+                  }
+                  return null;
+                }
+                const sortProps = getSortProps(item);
+                return (
+                  <th
+                    rowSpan={2}
+                    key={item.data}
+                    onClick={sortProps.onClick}
+                    className={sortProps.className}
+                    style={item.width ? { width: item.width } : {}}
+                  >
+                    {item.header}
+                    {sortProps.isSort && (
+                      <>
+                        {sortProps.dir === SORT_DIR.DESC && (
+                          <i className="bi bi-arrow-down" />
+                        )}
+                        {sortProps.dir === SORT_DIR.ASC && (
+                          <i className="bi bi-arrow-up" />
+                        )}
+                        {sortProps.dir === "" && (
+                          <i className="bi bi-arrow-down-up" />
+                        )}
+                      </>
+                    )}
+                  </th>
+                );
+              }
+              return null;
+            })
+          : null}
+      </tr>
+      <tr>
+        {columns
+          .filter((t) => hasText(t.group))
+          .map((item, i) => {
+            if (!item.isShow || item.isShow()) {
+              const sortProps = getSortProps(item);
+              return (
+                <th
+                  key={item.data}
+                  onClick={sortProps.onClick}
+                  className={sortProps.className}
+                  style={item.width ? { width: item.width } : {}}
+                >
+                  {item.header}
+                  {sortProps.isSort && (
+                    <>
+                      {sortProps.dir === SORT_DIR.DESC && (
+                        <i className="bi bi-arrow-down" />
+                      )}
+                      {sortProps.dir === SORT_DIR.ASC && (
+                        <i className="bi bi-arrow-up" />
+                      )}
+                      {sortProps.dir === "" && (
+                        <i className="bi bi-arrow-down-up" />
+                      )}
+                    </>
                   )}
-                  {sortProps.dir === SORT_DIR.ASC && (
-                    <i className="bi bi-arrow-up" />
-                  )}
-                  {sortProps.dir === "" && (
-                    <i className="bi bi-arrow-down-up" />
-                  )}
-                </>
-              )}
-            </th>
-          );
-        }
-        return null;
-      })}
-    </tr>
+                </th>
+              );
+            }
+            return null;
+          })}
+      </tr>
+    </>
   );
 }
 

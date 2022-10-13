@@ -39,6 +39,7 @@ export interface TableColumn<ROW> {
   width?: number;
   isShow?: () => boolean;
   render?: TableRowRenderFn<ROW>;
+  group?: string
 }
 
 export type TABLE_COLOR =
