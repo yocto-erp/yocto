@@ -140,53 +140,51 @@ export function YoTableHeader<ROW>({
             </button>
           </th>
         ) : null}
-        {groupColumn.length
-          ? columns.map((item, i) => {
-              if (!item.isShow || item.isShow()) {
-                if (hasText(item.group)) {
-                  const groupItem = groupColumn.find((t) => t.id === i);
-                  if (groupItem) {
-                    return (
-                      <th
-                        key={groupItem.name}
-                        className="min-width text-center"
-                        colSpan={groupItem.total}
-                      >
-                        {groupItem.name}
-                      </th>
-                    );
-                  }
-                  return null;
-                }
-                const sortProps = getSortProps(item);
+        {columns.map((item, i) => {
+          if (!item.isShow || item.isShow()) {
+            if (hasText(item.group)) {
+              const groupItem = groupColumn.find((t) => t.id === i);
+              if (groupItem) {
                 return (
                   <th
-                    rowSpan={2}
-                    key={item.data}
-                    onClick={sortProps.onClick}
-                    className={sortProps.className}
-                    style={item.width ? { width: item.width } : {}}
+                    key={groupItem.name}
+                    className="min-width text-center"
+                    colSpan={groupItem.total}
                   >
-                    {item.header}
-                    {sortProps.isSort && (
-                      <>
-                        {sortProps.dir === SORT_DIR.DESC && (
-                          <i className="bi bi-arrow-down" />
-                        )}
-                        {sortProps.dir === SORT_DIR.ASC && (
-                          <i className="bi bi-arrow-up" />
-                        )}
-                        {sortProps.dir === "" && (
-                          <i className="bi bi-arrow-down-up" />
-                        )}
-                      </>
-                    )}
+                    {groupItem.name}
                   </th>
                 );
               }
               return null;
-            })
-          : null}
+            }
+            const sortProps = getSortProps(item);
+            return (
+              <th
+                rowSpan={2}
+                key={item.data}
+                onClick={sortProps.onClick}
+                className={sortProps.className}
+                style={item.width ? { width: item.width } : {}}
+              >
+                {item.header}
+                {sortProps.isSort && (
+                  <>
+                    {sortProps.dir === SORT_DIR.DESC && (
+                      <i className="bi bi-arrow-down" />
+                    )}
+                    {sortProps.dir === SORT_DIR.ASC && (
+                      <i className="bi bi-arrow-up" />
+                    )}
+                    {sortProps.dir === "" && (
+                      <i className="bi bi-arrow-down-up" />
+                    )}
+                  </>
+                )}
+              </th>
+            );
+          }
+          return null;
+        })}
       </tr>
       <tr>
         {columns
