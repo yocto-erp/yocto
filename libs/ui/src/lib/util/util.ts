@@ -1,4 +1,4 @@
-import isFunction from 'lodash/isFunction';
+import { isFunction } from "underscore";
 
 export const isFunc = isFunction;
 const { isArray } = Array;
@@ -10,8 +10,8 @@ export const isArrayHasItem = (items: never) =>
 export const isSafari =
   /constructor/i.test(window.HTMLElement) ||
   (function checkSafari(p) {
-    return p.toString() === '[object SafariRemoteNotification]';
+    return p.toString() === "[object SafariRemoteNotification]";
   })(
     !window.safari ||
-    (typeof window.safari !== 'undefined' && window.safari.pushNotification)
+      (typeof window.safari !== "undefined" && window.safari.pushNotification)
   );

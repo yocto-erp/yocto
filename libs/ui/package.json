@@ -13,12 +13,17 @@
     "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
-    "bootstrap": "^5.2.0-beta1",
-    "react-bootstrap": "^2.4.0",
-    "clsx": "^1.1.1",
-    "bootstrap-icons": "^1.8.3",
+    "bootstrap": "^5.2.3",
+    "react-bootstrap": "^2.7.0",
+    "clsx": "^1.2.1",
+    "bootstrap-icons": "^1.10.3",
     "qs": "^6.11.0",
-    "lodash": "^4.17.21"
+    "underscore": "^1.13.6"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.26",
+    "@types/underscore": "^1.11.4",
+    "@types/qs": "^6.9.7"
   },
   "lang": "ui",
   "supportedLocales": ["en", "vi", "ja", "ko"]
