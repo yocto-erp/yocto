@@ -55,6 +55,7 @@ export interface YoTableProps<F, ROW extends BaseRow> {
   onBeforeSearch?: (searchRequest: SearchRequest<F>) => void;
   onSelectChange?: (rows: Array<ROW>) => void;
   isShowPaging?: boolean;
+  isFirstLoad?: boolean;
 }
 
 export function YoTable<F, ROW extends BaseRow>({
@@ -63,6 +64,7 @@ export function YoTable<F, ROW extends BaseRow>({
   enableSelectColumn = false,
   isShowPaging = true,
   onBeforeSearch,
+  isFirstLoad = true,
   ...props
 }: YoTableProps<F, ROW>) {
   const [tableState, dispatch] = useReducer<
@@ -105,10 +107,6 @@ export function YoTable<F, ROW extends BaseRow>({
     },
     [dispatch, props.fetchData]
   );
-
-  useEffect(() => {
-    loadData(tableState.search);
-  }, []);
 
   const onSort = useCallback(
     (name: string, sort: SORT_DIR | string) => {
@@ -241,6 +239,7 @@ export function YoTable<F, ROW extends BaseRow>({
       onRefresh,
       selectItems,
       removeItems,
+      loadData,
     }),
     [
       onSort,
@@ -253,6 +252,7 @@ export function YoTable<F, ROW extends BaseRow>({
       onRefresh,
       selectItems,
       removeItems,
+      loadData,
     ]
   );
 
@@ -261,6 +261,13 @@ export function YoTable<F, ROW extends BaseRow>({
       props.onSelectChange(selectItems);
     }
   }, [selectItems, props]);
+
+  useEffect(() => {
+    if (isFirstLoad) {
+      loadData(tableState.search);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ListActionProvider value={actionContext}>

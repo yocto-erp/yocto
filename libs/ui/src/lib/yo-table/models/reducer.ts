@@ -1,9 +1,9 @@
-import { createContext, useContext } from "react";
-import { SearchRequest } from "./SearchRequest";
-import { SORT_DIR, TableSortType } from "./Sort";
-import { SearchResponse } from "./SearchResponse";
-import { API_STATE, ApiError } from "../../api";
-import { BaseRow, TableRowIdFn } from "./constants";
+import {createContext, useContext} from "react";
+import {SearchRequest} from "./SearchRequest";
+import {SORT_DIR, TableSortType} from "./Sort";
+import {SearchResponse} from "./SearchResponse";
+import {API_STATE, ApiError} from "../../api";
+import {BaseRow, TableRowIdFn} from "./constants";
 
 const ListActionContext = createContext({
   onSort: (name: string, sort: SORT_DIR | string) => console.log("onSort"),
@@ -16,6 +16,7 @@ const ListActionContext = createContext({
   onRefresh: () => console.log("OnRefresh"),
   selectItems: [] as any[],
   removeItems: (items: any[]) => console.log("OnRemoveItems"),
+  loadData: (s: SearchRequest<any>) => console.log("loadData", s),
 });
 const ListStateContext = createContext({} as TableState<never, never>);
 
@@ -88,9 +89,9 @@ export interface InitTableStateProps<F> {
 }
 
 export function initialTableState<F, R>({
-  filter,
-  sorts,
-}: InitTableStateProps<F>): TableState<F, R> {
+                                          filter,
+                                          sorts,
+                                        }: InitTableStateProps<F>): TableState<F, R> {
   return {
     pagingType: PAGING_TYPE.PAGING,
     errors: [],
@@ -247,7 +248,7 @@ function reducerRemoveItems<F, R extends BaseRow>(
   const removeItems = action.data?.removeItems ?? [];
   const rowId = action.data?.rowId;
   if (removeItems.length) {
-    const newState = { ...state };
+    const newState = {...state};
     removeItems.forEach((item) => {
       let _rowId;
       if (rowId) {
@@ -271,7 +272,7 @@ function reducerToggleItem<F, R extends BaseRow>(
   const rowId = action.data?.rowId;
 
   if (index !== undefined && state.data?.rows[index]) {
-    const newState = { ...state };
+    const newState = {...state};
     if (!newState.selects) {
       newState.selects = {};
     }
@@ -294,7 +295,7 @@ function reducerToggleAllNone<F, R extends BaseRow>(
 ): TableState<F, R> {
   const type = action.data?.selectType;
   const rowId = action.data?.rowId;
-  const newState = { ...state };
+  const newState = {...state};
 
   const newSelect = newState.selects || {};
   (newState.data?.rows || []).forEach((t) => {
@@ -326,7 +327,7 @@ export const tableReducer = <F, R extends BaseRow>(
       return {
         ...state,
         state: API_STATE.SUCCESS,
-        data: action.data?.resp || { rows: [], count: 0 },
+        data: action.data?.resp || {rows: [], count: 0},
       };
     case ACTION.LOAD_FAIL:
       return {
@@ -339,14 +340,14 @@ export const tableReducer = <F, R extends BaseRow>(
       return {
         ...state,
         state: API_STATE.SUCCESS,
-        search: { ...state.search, page: action.data?.page || 1 },
+        search: {...state.search, page: action.data?.page || 1},
         data: action.data?.resp,
       };
     case ACTION.CHANGE_PAGE_SIZE:
       return {
         ...state,
         state: API_STATE.SUCCESS,
-        search: { ...state.search, size: action.data?.size || 10, page: 1 },
+        search: {...state.search, size: action.data?.size || 10, page: 1},
         data: action.data?.resp,
       };
     case ACTION.REFRESH:
