@@ -240,6 +240,7 @@ export function YoTable<F, ROW extends BaseRow>({
       selectItems,
       removeItems,
       loadData,
+      dispatch
     }),
     [
       onSort,
@@ -253,6 +254,7 @@ export function YoTable<F, ROW extends BaseRow>({
       selectItems,
       removeItems,
       loadData,
+      dispatch
     ]
   );
 

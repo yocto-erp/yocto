@@ -17,6 +17,7 @@ const ListActionContext = createContext({
   selectItems: [] as any[],
   removeItems: (items: any[]) => console.log("OnRemoveItems"),
   loadData: (s: SearchRequest<any>) => console.log("loadData", s),
+  dispatch: (action: REDUCE_ACTION<any, any> ) => console.log("dispatch"),
 });
 const ListStateContext = createContext({} as TableState<never, never>);
 
