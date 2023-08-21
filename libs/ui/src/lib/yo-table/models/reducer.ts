@@ -1,9 +1,9 @@
-import {createContext, useContext} from "react";
-import {SearchRequest} from "./SearchRequest";
-import {SORT_DIR, TableSortType} from "./Sort";
-import {SearchResponse} from "./SearchResponse";
-import {API_STATE, ApiError} from "../../api";
-import {BaseRow, TableRowIdFn} from "./constants";
+import { createContext, useContext } from "react";
+import { SearchRequest } from "./SearchRequest";
+import { SORT_DIR, TableSortType } from "./Sort";
+import { SearchResponse } from "./SearchResponse";
+import { API_STATE, ApiError } from "../../api";
+import { BaseRow, TableRowIdFn } from "./constants";
 
 const ListActionContext = createContext({
   onSort: (name: string, sort: SORT_DIR | string) => console.log("onSort"),
@@ -43,6 +43,7 @@ enum ACTION {
   SELECT_ITEM = "SELECT_ITEM",
   SELECT_ALL_NONE = "SELECT_ALL_NONE",
   REMOVE_ITEMS = "REMOVE_ITEMS",
+  SET_SEARCH_REQUEST = "SET_SEARCH_REQUEST",
 }
 
 export enum TABLE_SELECT_TYPE {
@@ -54,6 +55,7 @@ export interface REDUCE_ACTION<F, ROW extends BaseRow> {
   type: ACTION;
   data?: {
     resp?: SearchResponse<ROW>;
+    searchRequest?: SearchRequest<F>;
     filter?: F;
     errors?: Array<ApiError>;
     page?: number;
@@ -89,9 +91,9 @@ export interface InitTableStateProps<F> {
 }
 
 export function initialTableState<F, R>({
-                                          filter,
-                                          sorts,
-                                        }: InitTableStateProps<F>): TableState<F, R> {
+  filter,
+  sorts,
+}: InitTableStateProps<F>): TableState<F, R> {
   return {
     pagingType: PAGING_TYPE.PAGING,
     errors: [],
@@ -228,6 +230,19 @@ export function actionOnSearch<F, R extends BaseRow>(
   };
 }
 
+export function actionSetSearchRequest<F, R extends BaseRow>(
+  searchRequest: SearchRequest<F>,
+  data?: SearchResponse<R>
+): REDUCE_ACTION<F, R> {
+  return {
+    type: ACTION.SET_SEARCH_REQUEST,
+    data: {
+      searchRequest: searchRequest,
+      resp: data,
+    },
+  };
+}
+
 export function actionRemoveItems<F, R extends BaseRow>(
   data: Array<R>,
   rowId?: TableRowIdFn<R>
@@ -248,7 +263,7 @@ function reducerRemoveItems<F, R extends BaseRow>(
   const removeItems = action.data?.removeItems ?? [];
   const rowId = action.data?.rowId;
   if (removeItems.length) {
-    const newState = {...state};
+    const newState = { ...state };
     removeItems.forEach((item) => {
       let _rowId;
       if (rowId) {
@@ -272,7 +287,7 @@ function reducerToggleItem<F, R extends BaseRow>(
   const rowId = action.data?.rowId;
 
   if (index !== undefined && state.data?.rows[index]) {
-    const newState = {...state};
+    const newState = { ...state };
     if (!newState.selects) {
       newState.selects = {};
     }
@@ -295,7 +310,7 @@ function reducerToggleAllNone<F, R extends BaseRow>(
 ): TableState<F, R> {
   const type = action.data?.selectType;
   const rowId = action.data?.rowId;
-  const newState = {...state};
+  const newState = { ...state };
 
   const newSelect = newState.selects || {};
   (newState.data?.rows || []).forEach((t) => {
@@ -315,7 +330,6 @@ export const tableReducer = <F, R extends BaseRow>(
   state: TableState<F, R>,
   action: REDUCE_ACTION<F, R>
 ): TableState<F, R> => {
-  console.log(action);
   switch (action.type) {
     case ACTION.LOAD_START:
       return {
@@ -327,7 +341,7 @@ export const tableReducer = <F, R extends BaseRow>(
       return {
         ...state,
         state: API_STATE.SUCCESS,
-        data: action.data?.resp || {rows: [], count: 0},
+        data: action.data?.resp || { rows: [], count: 0 },
       };
     case ACTION.LOAD_FAIL:
       return {
@@ -340,14 +354,14 @@ export const tableReducer = <F, R extends BaseRow>(
       return {
         ...state,
         state: API_STATE.SUCCESS,
-        search: {...state.search, page: action.data?.page || 1},
+        search: { ...state.search, page: action.data?.page || 1 },
         data: action.data?.resp,
       };
     case ACTION.CHANGE_PAGE_SIZE:
       return {
         ...state,
         state: API_STATE.SUCCESS,
-        search: {...state.search, size: action.data?.size || 10, page: 1},
+        search: { ...state.search, size: action.data?.size || 10, page: 1 },
         data: action.data?.resp,
       };
     case ACTION.REFRESH:
@@ -379,6 +393,24 @@ export const tableReducer = <F, R extends BaseRow>(
         state: API_STATE.SUCCESS,
         search: {
           ...state.search,
+          sorts: newSort,
+        },
+        data: action.data?.resp,
+      };
+    }
+    case ACTION.SET_SEARCH_REQUEST: {
+      const name = action.data?.name;
+      const dir = action.data?.dir;
+      const newSort = state.search.sorts || {};
+      if (name) {
+        newSort[name] = dir || "";
+      }
+      return {
+        ...state,
+        search: {
+          page: action.data?.searchRequest?.page || 1,
+          size: action.data?.searchRequest?.size || 10,
+          filter: action.data?.searchRequest?.filter,
           sorts: newSort,
         },
         data: action.data?.resp,
