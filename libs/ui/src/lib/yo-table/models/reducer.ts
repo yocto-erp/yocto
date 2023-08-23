@@ -16,8 +16,12 @@ const ListActionContext = createContext({
   onRefresh: () => console.log("OnRefresh"),
   selectItems: [] as any[],
   removeItems: (items: any[]) => console.log("OnRemoveItems"),
-  loadData: (s: SearchRequest<any>) => console.log("loadData", s),
-  dispatch: (action: REDUCE_ACTION<any, any> ) => console.log("dispatch"),
+  loadData: (s: SearchRequest<any>) =>
+    new Promise((res) => {
+      console.log("loadData", s);
+      res(1);
+    }),
+  dispatch: (action: REDUCE_ACTION<any, any>) => console.log("dispatch"),
 });
 const ListStateContext = createContext({} as TableState<never, never>);
 
@@ -32,7 +36,7 @@ export function useListStateContext() {
 export const ListActionProvider = ListActionContext.Provider;
 export const ListStateProvider = ListStateContext.Provider;
 
-enum ACTION {
+export enum ACTION {
   SEARCH = "SEARCH",
   REFRESH = "REFRESH",
   CHANGE_PAGE_SIZE = "CHANGE_PAGE_SIZE",
@@ -413,8 +417,7 @@ export const tableReducer = <F, R extends BaseRow>(
           size: action.data?.searchRequest?.size || 10,
           filter: action.data?.searchRequest?.filter,
           sorts: newSort,
-        },
-        data: action.data?.resp,
+        }
       };
     }
     case ACTION.SELECT_ITEM:

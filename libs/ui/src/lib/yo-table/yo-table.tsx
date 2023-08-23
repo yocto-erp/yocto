@@ -92,12 +92,13 @@ export function YoTable<F, ROW extends BaseRow>({
         onBeforeSearch(search);
       }
       dispatch(loadStart());
-      props.fetchData(search).then(
+      return props.fetchData(search).then(
         (t) => {
           if (successAction) {
             successAction(t);
           }
           dispatch(loadSuccess(t));
+          return t;
         },
         (err) => {
           console.error("YoTable Load Fail: ", err);
@@ -105,7 +106,7 @@ export function YoTable<F, ROW extends BaseRow>({
         }
       );
     },
-    [dispatch, props.fetchData]
+    [onBeforeSearch, props]
   );
 
   const onSort = useCallback(
@@ -129,7 +130,7 @@ export function YoTable<F, ROW extends BaseRow>({
       const newSearch = { ...tableState.search, page };
       loadData(newSearch, (t) => {
         dispatch(changePage(page, t));
-      });
+      }).then();
     },
     [tableState, dispatch, loadData]
   );
@@ -139,7 +140,7 @@ export function YoTable<F, ROW extends BaseRow>({
       const newSearch = { ...tableState.search, size, page: 1 };
       loadData(newSearch, (t) => {
         dispatch(changePageSize(size, t));
-      });
+      }).then();
     },
     [tableState, dispatch, loadData]
   );
@@ -192,7 +193,7 @@ export function YoTable<F, ROW extends BaseRow>({
       };
       loadData(newSearch, (t) => {
         dispatch(actionOnSearch(filter, t));
-      });
+      }).then();
     },
     [tableState, dispatch, loadData]
   );
@@ -211,7 +212,7 @@ export function YoTable<F, ROW extends BaseRow>({
         dispatch(actionRefresh(t));
       },
       false
-    );
+    ).then();
   }, [tableState, dispatch, loadData]);
 
   const selectItems = useMemo(() => {
@@ -266,7 +267,7 @@ export function YoTable<F, ROW extends BaseRow>({
 
   useEffect(() => {
     if (isFirstLoad) {
-      loadData(tableState.search);
+      loadData(tableState.search).then();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
