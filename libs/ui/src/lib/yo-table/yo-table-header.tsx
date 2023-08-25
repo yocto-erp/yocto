@@ -107,7 +107,7 @@ export function YoTableHeader<ROW>({
         }
       }
     }
-    console.log(rs);
+    // console.log(rs);
     return rs;
   }, [columns]);
 
@@ -186,7 +186,7 @@ export function YoTableHeader<ROW>({
           return null;
         })}
       </tr>
-      <tr>
+      {groupColumn.length && <tr>
         {columns
           .filter((t) => hasText(t.group))
           .map((item, i) => {
@@ -218,7 +218,7 @@ export function YoTableHeader<ROW>({
             }
             return null;
           })}
-      </tr>
+      </tr>}
     </>
   );
 }
