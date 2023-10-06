@@ -57,8 +57,8 @@ const props: YoTableProps<FILTER, ROW> = {
      */
     setTimeout(() => res({
       count: totalRow,
-      rows: data
-    }), 100)
+      rows: []
+    }), 2000)
 
   })
 };
