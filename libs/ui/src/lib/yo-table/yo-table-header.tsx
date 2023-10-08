@@ -186,7 +186,7 @@ export function YoTableHeader<ROW>({
           return null;
         })}
       </tr>
-      {groupColumn.length && <tr>
+      {groupColumn.length > 0 && <tr>
         {columns
           .filter((t) => hasText(t.group))
           .map((item, i) => {
