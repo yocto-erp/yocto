@@ -64,6 +64,8 @@ export interface FormRowInputProps extends FormRowProps {
   value?: string;
   disabled?: boolean;
   error?: string;
+  leftAddOn?: React.ReactNode
+  rightAddOn?: React.ReactNode
 }
 
 export interface FormRowSelectProps extends FormRowInputProps {
