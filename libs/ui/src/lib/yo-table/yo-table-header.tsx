@@ -36,7 +36,7 @@ export function YoTableHeader<ROW>({
 
   const onSortClick = React.useCallback(
     (name: string) => {
-      console.log(name);
+      // console.log(name);
       if (tableState.state === API_STATE.LOADING) return;
       const sorts = tableState.search.sorts;
       if (onSort && sorts) {

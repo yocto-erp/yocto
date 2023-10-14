@@ -76,7 +76,7 @@ export function YoTablePaging() {
       }
     }
 
-    console.log(pages);
+    // console.log(pages);
     return pages;
   }, [tableState]);
 
