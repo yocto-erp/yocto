@@ -42,6 +42,7 @@ export const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
         valueCol={props.valueCol}
         className={props.className}
         size={size}
+        rowClass={props.rowClass}
       >
         {(leftAddOn || rightAddOn) && (
           <div

@@ -9,7 +9,7 @@ export function FormRow({
   label,
   children,
   required,
-  rowClass = "mb=3",
+  rowClass = "mb-3",
   size = FORM_ROW_SIZE.MEDIUM,
   className = "align-items-center",
 }: FormRowProps) {
