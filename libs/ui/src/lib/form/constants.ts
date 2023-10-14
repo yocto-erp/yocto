@@ -44,6 +44,7 @@ export interface FormRowProps {
   children?: React.ReactNode;
   size?: FORM_ROW_SIZE;
   className?: string;
+  rowClass?: string
 }
 
 export enum FORM_ROW_SIZE {

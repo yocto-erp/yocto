@@ -9,6 +9,7 @@ export function FormRow({
   label,
   children,
   required,
+  rowClass = "mb=3",
   size = FORM_ROW_SIZE.MEDIUM,
   className = "align-items-center",
 }: FormRowProps) {
@@ -28,7 +29,7 @@ export function FormRow({
   } else {
     els = children;
   }
-  return <div className={clsx("row mb-3", className)}>{els}</div>;
+  return <div className={clsx("row", rowClass, className)}>{els}</div>;
 }
 
 export default FormRow;
