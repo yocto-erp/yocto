@@ -31,7 +31,7 @@ export function YoTableBody<ROW extends BaseRow>({
     },
     [rowId]
   );
-  const { data, state } = useListStateContext();
+  const { data, state } = useListStateContext<any, ROW>();
   const { isItemSelect, toggleItem } = useListActionContext();
 
   const totalColumn = useMemo(() => {
@@ -63,13 +63,13 @@ export function YoTableBody<ROW extends BaseRow>({
   return (
     <>
       {(data?.rows || []).map((row, index) => (
-        <tr key={_rowId(row)} id={`ROW_${_rowId(row)}`}>
+        <tr key={_rowId(row as ROW)} id={`ROW_${_rowId(row as ROW)}`}>
           {enableSelectColumn ? (
             <td className="min text-center">
               <input
                 className="form-check-input"
                 type="checkbox"
-                id={_rowId(row)}
+                id={_rowId(row as ROW)}
                 value="1"
                 aria-label="..."
                 checked={isItemSelect(index)}
@@ -89,7 +89,7 @@ export function YoTableBody<ROW extends BaseRow>({
                   }
                   className={clsx(item.class)}
                 >
-                  {item.render ? item.render(row) : row[`${item.data}`]}
+                  {item.render ? item.render(row as ROW) : row[`${item.data}`]}
                 </td>
               );
             }

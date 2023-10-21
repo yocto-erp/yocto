@@ -55,6 +55,7 @@ export enum FORM_ROW_SIZE {
 
 export interface FormRowInputProps extends FormRowProps {
   inputClass?: string;
+  inputGroupClass?: string;
   type?: HTMLInputTypeAttribute | undefined;
   readOnly?: boolean | undefined;
   onChange?: ChangeEventHandler;

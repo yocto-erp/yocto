@@ -165,16 +165,16 @@ export function YoTable<F, ROW extends BaseRow>({
 
   const toggleItem = useCallback(
     (index: number) => {
-      dispatch(actionToggleItem(index, props.rowId));
+      dispatch(actionToggleItem(index, props.rowId, props.onSelectChange));
     },
-    [props.rowId, dispatch]
+    [props.rowId, dispatch, props.onSelectChange]
   );
 
   const toggleAllItem = useCallback(
     (type: TABLE_SELECT_TYPE) => {
-      dispatch(actionToggleAll(type, props.rowId));
+      dispatch(actionToggleAll(type, props.rowId, props.onSelectChange));
     },
-    [props.rowId, dispatch]
+    [props.onSelectChange, props.rowId, dispatch]
   );
 
   const removeItems = useCallback(
@@ -259,11 +259,12 @@ export function YoTable<F, ROW extends BaseRow>({
     ]
   );
 
+  /*
   useEffect(() => {
     if (props.onSelectChange) {
       props.onSelectChange(selectItems);
     }
-  }, [selectItems, props]);
+  }, [selectItems, props]); */
 
   useEffect(() => {
     if (isFirstLoad) {

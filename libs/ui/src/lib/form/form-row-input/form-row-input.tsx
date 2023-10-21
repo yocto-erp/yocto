@@ -9,6 +9,7 @@ export const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
   (
     {
       inputClass = "",
+      inputGroupClass = "",
       size = FORM_ROW_SIZE.MEDIUM,
       leftAddOn,
       rightAddOn,
@@ -46,7 +47,7 @@ export const FormRowInput = forwardRef<HTMLInputElement, FormRowInputProps>(
       >
         {(leftAddOn || rightAddOn) && (
           <div
-            className={clsx(`input-group input-group-${size}`, {
+            className={clsx(`input-group input-group-${size}`, inputGroupClass, {
               "is-invalid": hasText(props.error),
             })}
           >

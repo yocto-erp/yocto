@@ -23,14 +23,14 @@ const ListActionContext = createContext({
     }),
   dispatch: (action: REDUCE_ACTION<any, any>) => console.log("dispatch"),
 });
-const ListStateContext = createContext({} as TableState<never, never>);
+const ListStateContext = createContext({} as TableState<any, any>);
 
 export function useListActionContext() {
   return useContext(ListActionContext);
 }
 
-export function useListStateContext() {
-  return useContext(ListStateContext);
+export function useListStateContext<F, R>() {
+  return useContext<TableState<F, R>>(ListStateContext);
 }
 
 export const ListActionProvider = ListActionContext.Provider;
@@ -71,6 +71,7 @@ export interface REDUCE_ACTION<F, ROW extends BaseRow> {
     rowId?: TableRowIdFn<ROW>;
     selectType?: TABLE_SELECT_TYPE;
     removeItems?: Array<ROW> | null;
+    onChangeItems?: (items: Array<ROW>) => void;
   };
 }
 
@@ -133,26 +134,30 @@ export function onChangeSort<F, ROW extends BaseRow>(
 
 export function actionToggleItem<F, ROW extends BaseRow>(
   itemIndex: number,
-  rowId?: TableRowIdFn<ROW>
+  rowId?: TableRowIdFn<ROW>,
+  onChangeItems?: (items: Array<ROW>) => void
 ): REDUCE_ACTION<F, ROW> {
   return {
     type: ACTION.SELECT_ITEM,
     data: {
       index: itemIndex,
       rowId,
+      onChangeItems,
     },
   };
 }
 
 export function actionToggleAll<F, ROW extends BaseRow>(
   type: TABLE_SELECT_TYPE,
-  rowId?: TableRowIdFn<ROW>
+  rowId?: TableRowIdFn<ROW>,
+  onChangeItems?: (items: Array<ROW>) => void
 ): REDUCE_ACTION<F, ROW> {
   return {
     type: ACTION.SELECT_ALL_NONE,
     data: {
       selectType: type,
       rowId,
+      onChangeItems
     },
   };
 }
@@ -284,6 +289,19 @@ function reducerRemoveItems<F, R extends BaseRow>(
   return state;
 }
 
+const getItemsSelected = <F, R>(state: TableState<F, R>) => {
+  const rs: R[] = [];
+  if (state.selects) {
+    const keys = Object.keys(state.selects);
+    for (let i = 0; i < keys.length; i += 1) {
+      if (state.selects[keys[i]]) {
+        rs.push(state.selects[keys[i]]);
+      }
+    }
+  }
+  return rs;
+};
+
 function reducerToggleItem<F, R extends BaseRow>(
   state: TableState<F, R>,
   action: REDUCE_ACTION<F, R>
@@ -304,6 +322,9 @@ function reducerToggleItem<F, R extends BaseRow>(
       _rowId = item.id;
     }
     newState.selects[_rowId] = newState.selects[_rowId] ? null : item;
+    if (action.data?.onChangeItems) {
+      action.data.onChangeItems(getItemsSelected(newState));
+    }
     return newState;
   }
   return state;
@@ -328,6 +349,9 @@ function reducerToggleAllNone<F, R extends BaseRow>(
     newSelect[_rowId] = type === TABLE_SELECT_TYPE.ALL ? t : null;
   });
   newState.selects = newSelect;
+  if (action.data?.onChangeItems) {
+    action.data.onChangeItems(getItemsSelected(newState));
+  }
   return newState;
 }
 
@@ -417,7 +441,7 @@ export const tableReducer = <F, R extends BaseRow>(
           size: action.data?.searchRequest?.size || 10,
           filter: action.data?.searchRequest?.filter,
           sorts: newSort,
-        }
+        },
       };
     }
     case ACTION.SELECT_ITEM:
