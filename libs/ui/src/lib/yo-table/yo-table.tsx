@@ -35,6 +35,7 @@ import {
   actionOnSearch,
   actionRefresh,
   actionRemoveItems,
+  PAGING_TYPE,
 } from "./models/reducer";
 import YoTablePaging from "./yo-table-paging";
 import YoTablePageSize from "./yo-table-page-size";
@@ -201,10 +202,14 @@ export function YoTable<F, ROW extends BaseRow>({
   const onRefresh = useCallback(() => {
     // This newSearch using in case Load More
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const size =
+      tableState.pagingType === PAGING_TYPE.LOAD_MORE
+        ? tableState.search.size * tableState.search.page
+        : tableState.search.size;
     const newSearch = {
       ...tableState.search,
       page: 1,
-      size: tableState.search.size * tableState.search.page,
+      size,
     };
     loadData(
       newSearch,
@@ -241,7 +246,7 @@ export function YoTable<F, ROW extends BaseRow>({
       selectItems,
       removeItems,
       loadData,
-      dispatch
+      dispatch,
     }),
     [
       onSort,
@@ -255,7 +260,7 @@ export function YoTable<F, ROW extends BaseRow>({
       selectItems,
       removeItems,
       loadData,
-      dispatch
+      dispatch,
     ]
   );
 
