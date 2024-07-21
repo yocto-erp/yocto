@@ -206,9 +206,12 @@ export function YoTable<F, ROW extends BaseRow>({
       tableState.pagingType === PAGING_TYPE.LOAD_MORE
         ? tableState.search.size * tableState.search.page
         : tableState.search.size;
+    const page = tableState.pagingType === PAGING_TYPE.LOAD_MORE
+      ? 1
+      : tableState.search.page;
     const newSearch = {
       ...tableState.search,
-      page: 1,
+      page,
       size,
     };
     loadData(
