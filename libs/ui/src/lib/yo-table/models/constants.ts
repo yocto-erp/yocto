@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { SearchRequest } from "./SearchRequest";
 import { SearchResponse } from "./SearchResponse";
 
-
 export interface BaseRow {
   id: string | number;
 
@@ -10,7 +9,7 @@ export interface BaseRow {
 }
 
 export interface TableRowRenderFn<Type> {
-  (arg: Type): ReactNode;
+  (arg: Type, index?: number, globalIndex?: number): ReactNode;
 }
 
 export interface TableFetchDataFn<F, R> {
@@ -39,7 +38,7 @@ export interface TableColumn<ROW> {
   width?: number;
   isShow?: () => boolean;
   render?: TableRowRenderFn<ROW>;
-  group?: string
+  group?: string;
 }
 
 export type TABLE_COLOR =

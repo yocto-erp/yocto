@@ -1,4 +1,10 @@
-import { BaseRow, TableColumn, TableRowIdFn, useListActionContext, useListStateContext } from "./models";
+import {
+  BaseRow,
+  TableColumn,
+  TableRowIdFn,
+  useListActionContext,
+  useListStateContext,
+} from "./models";
 import React, { useCallback, useMemo } from "react";
 import { isFunction } from "lodash";
 import clsx from "clsx";
@@ -33,6 +39,7 @@ export function YoTableBody<ROW extends BaseRow>({
   );
   const { data, state } = useListStateContext<any, ROW>();
   const { isItemSelect, toggleItem } = useListActionContext();
+  const { search } = useListStateContext();
 
   const totalColumn = useMemo(() => {
     let total = enableSelectColumn ? 1 : 0;
@@ -89,7 +96,13 @@ export function YoTableBody<ROW extends BaseRow>({
                   }
                   className={clsx(item.class)}
                 >
-                  {item.render ? item.render(row as ROW) : row[`${item.data}`]}
+                  {item.render
+                    ? item.render(
+                        row as ROW,
+                        index,
+                        index + (search.page - 1) * search.size
+                      )
+                    : row[`${item.data}`]}
                 </td>
               );
             }

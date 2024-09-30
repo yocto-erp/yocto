@@ -26,7 +26,7 @@ interface FILTER {
 const totalRow = 10000
 const props: YoTableProps<FILTER, ROW> = {
   columns: [
-    {header: 'ID', data: 'id', sort: true},
+    {header: 'ID', data: 'id', sort: true, render: (row, i, globalIndex) => (globalIndex || 0) + 1},
     {header: 'Name', data: 'name', sort: true},
     {header: 'Age', data: 'age', sort: true, group: "info"},
     {header: 'Birthday', data: 'birthday', sort: true, group: "info"},
@@ -57,7 +57,7 @@ const props: YoTableProps<FILTER, ROW> = {
      */
     setTimeout(() => res({
       count: totalRow,
-      rows: []
+      rows: data
     }), 2000)
 
   })
