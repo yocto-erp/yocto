@@ -39,12 +39,13 @@ export interface FormRowProps {
   labelCol?: number;
   valueCol?: number;
   label: React.ReactNode;
+  labelClass?: string;
   htmlFor?: string;
   required?: boolean;
   children?: React.ReactNode;
   size?: FORM_ROW_SIZE;
   className?: string;
-  rowClass?: string
+  rowClass?: string;
 }
 
 export enum FORM_ROW_SIZE {
@@ -65,8 +66,8 @@ export interface FormRowInputProps extends FormRowProps {
   value?: string;
   disabled?: boolean;
   error?: string;
-  leftAddOn?: React.ReactNode
-  rightAddOn?: React.ReactNode
+  leftAddOn?: React.ReactNode;
+  rightAddOn?: React.ReactNode;
 }
 
 export interface FormRowSelectProps extends FormRowInputProps {

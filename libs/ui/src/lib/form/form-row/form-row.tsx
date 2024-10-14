@@ -7,6 +7,7 @@ export function FormRow({
   labelCol = 3,
   valueCol = 9,
   label,
+  labelClass="",
   children,
   required,
   rowClass = "mb-3",
@@ -18,7 +19,7 @@ export function FormRow({
     els = (
       <>
         <label
-          className={`col-sm-${labelCol} col-form-label col-form-label-${size}`}
+          className={clsx(`col-sm-${labelCol} col-form-label col-form-label-${size}`, labelClass)}
           htmlFor={htmlFor}
         >
           {label} {required ? <span className={clsx("required")}></span> : ""}
