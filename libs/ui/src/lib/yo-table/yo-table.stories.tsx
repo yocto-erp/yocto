@@ -58,7 +58,7 @@ const props: YoTableProps<FILTER, ROW> = {
     setTimeout(() => res({
       count: totalRow,
       rows: data
-    }), 2000)
+    }), 1000)
 
   })
 };
@@ -72,6 +72,7 @@ Primary.args = {
   columns: props.columns,
   fetchData: props.fetchData,
   enableSelectColumn: true,
+  isMultiSort: true,
   rowId: (row) => `abc${row.id}`,
   isShowPaging: true,
   initSort: {"id": SORT_DIR.DESC}

@@ -57,6 +57,7 @@ export interface YoTableProps<F, ROW extends BaseRow> {
   onSelectChange?: (rows: Array<ROW>) => void;
   isShowPaging?: boolean;
   isFirstLoad?: boolean;
+  isMultiSort?: boolean;
 }
 
 export function YoTable<F, ROW extends BaseRow>({
@@ -66,6 +67,7 @@ export function YoTable<F, ROW extends BaseRow>({
   isShowPaging = true,
   onBeforeSearch,
   isFirstLoad = true,
+  isMultiSort = false,
   ...props
 }: YoTableProps<F, ROW>) {
   const [tableState, dispatch] = useReducer<
@@ -112,18 +114,17 @@ export function YoTable<F, ROW extends BaseRow>({
 
   const onSort = useCallback(
     (name: string, sort: SORT_DIR | string) => {
+      const newSort = isMultiSort ? {...tableState.search.sorts} : {};
+      newSort[name] = sort;
       const newSearch = {
         ...tableState.search,
-        sorts: {
-          ...tableState.search.sorts,
-          [name]: sort,
-        },
+        sorts: newSort,
       };
       loadData(newSearch, (t) => {
-        dispatch(onChangeSort(name, sort, t));
-      });
+        dispatch(onChangeSort(name, sort, t, isMultiSort));
+      }).then();
     },
-    [tableState, dispatch, loadData]
+    [isMultiSort, tableState.search, loadData]
   );
 
   const onChangePage = useCallback(
@@ -206,9 +207,10 @@ export function YoTable<F, ROW extends BaseRow>({
       tableState.pagingType === PAGING_TYPE.LOAD_MORE
         ? tableState.search.size * tableState.search.page
         : tableState.search.size;
-    const page = tableState.pagingType === PAGING_TYPE.LOAD_MORE
-      ? 1
-      : tableState.search.page;
+    const page =
+      tableState.pagingType === PAGING_TYPE.LOAD_MORE
+        ? 1
+        : tableState.search.page;
     const newSearch = {
       ...tableState.search,
       page,

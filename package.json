@@ -1,6 +1,6 @@
 {
   "name": "yoctoerp",
-  "version": "0.0.52",
+  "version": "0.0.54",
   "license": "MIT",
   "scripts": {
     "story:ui": "NODE_OPTIONS=--openssl-legacy-provider nx run ui:storybook",

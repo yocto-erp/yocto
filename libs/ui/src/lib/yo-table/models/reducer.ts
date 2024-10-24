@@ -72,6 +72,7 @@ export interface REDUCE_ACTION<F, ROW extends BaseRow> {
     selectType?: TABLE_SELECT_TYPE;
     removeItems?: Array<ROW> | null;
     onChangeItems?: (items: Array<ROW>) => void;
+    isMultiSort?: boolean
   };
 }
 
@@ -120,7 +121,8 @@ export function initialTableState<F, R>({
 export function onChangeSort<F, ROW extends BaseRow>(
   name: string,
   value: SORT_DIR | string,
-  resp: SearchResponse<ROW>
+  resp: SearchResponse<ROW>,
+  isMultiSort: boolean
 ): REDUCE_ACTION<F, ROW> {
   return {
     type: ACTION.SORT,
@@ -128,6 +130,7 @@ export function onChangeSort<F, ROW extends BaseRow>(
       name,
       dir: value,
       resp,
+      isMultiSort
     },
   };
 }
@@ -413,7 +416,8 @@ export const tableReducer = <F, R extends BaseRow>(
     case ACTION.SORT: {
       const name = action.data?.name;
       const dir = action.data?.dir;
-      const newSort = state.search.sorts || {};
+      const isMultiSort = action.data?.isMultiSort
+      const newSort = isMultiSort ? (state.search.sorts || {}) : {};
       if (name) {
         newSort[name] = dir || "";
       }
