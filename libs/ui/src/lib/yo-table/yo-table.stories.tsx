@@ -1,10 +1,11 @@
 import {ComponentStory, ComponentMeta} from '@storybook/react';
-import {YoTable, YoTableProps} from './yo-table';
+import {PagingMode, YoTable, YoTableProps} from './yo-table';
 import {BaseRow, SORT_DIR} from "./models";
 import {YoTableBody} from "./yo-table-body"
 import {YoTableHeader} from "./yo-table-header"
 import {YoTablePageSize} from "./yo-table-page-size"
 import {YoTablePaging} from "./yo-table-paging"
+import {PAGING_TYPE} from "./models/reducer";
 
 export default {
   component: YoTable,
@@ -75,5 +76,6 @@ Primary.args = {
   isMultiSort: true,
   rowId: (row) => `abc${row.id}`,
   isShowPaging: true,
+  pagingMode: PagingMode.PAGING,
   initSort: {"id": SORT_DIR.DESC}
 };

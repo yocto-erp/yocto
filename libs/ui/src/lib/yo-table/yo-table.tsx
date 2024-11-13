@@ -41,6 +41,12 @@ import YoTablePaging from "./yo-table-paging";
 import YoTablePageSize from "./yo-table-page-size";
 import { API_STATE } from "../api";
 import clsx from "clsx";
+import { YoTablePagingNextPrevious } from "./yo-table-paging-next-previous";
+
+export enum PagingMode {
+  PAGING = 0,
+  PREVIOUS_NEXT = 1,
+}
 
 export interface YoTableProps<F, ROW extends BaseRow> {
   columns: Array<TableColumn<ROW>>;
@@ -58,6 +64,7 @@ export interface YoTableProps<F, ROW extends BaseRow> {
   isShowPaging?: boolean;
   isFirstLoad?: boolean;
   isMultiSort?: boolean;
+  pagingMode?: PagingMode;
 }
 
 export function YoTable<F, ROW extends BaseRow>({
@@ -68,6 +75,7 @@ export function YoTable<F, ROW extends BaseRow>({
   onBeforeSearch,
   isFirstLoad = true,
   isMultiSort = false,
+  pagingMode = PagingMode.PAGING,
   ...props
 }: YoTableProps<F, ROW>) {
   const [tableState, dispatch] = useReducer<
@@ -114,7 +122,7 @@ export function YoTable<F, ROW extends BaseRow>({
 
   const onSort = useCallback(
     (name: string, sort: SORT_DIR | string) => {
-      const newSort = isMultiSort ? {...tableState.search.sorts} : {};
+      const newSort = isMultiSort ? { ...tableState.search.sorts } : {};
       newSort[name] = sort;
       const newSearch = {
         ...tableState.search,
@@ -330,27 +338,36 @@ export function YoTable<F, ROW extends BaseRow>({
         </div>
         {isShowPaging && (
           <div className="w-100 mt-2">
-            <div className="row justify-content-center">
-              <div className="col-md-6">
-                <div className="mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
-                  <YoTablePageSize />
-                  Total: {tableState.data?.count || 0}
-                  {tableState.state === API_STATE.LOADING ? (
-                    <Spinner
-                      size="sm"
-                      variant={color}
-                      className="ms-2 ml-auto"
-                      animation={"grow"}
-                    />
-                  ) : (
-                    ""
-                  )}
+            {pagingMode === PagingMode.PAGING && (
+              <div className="row justify-content-center">
+                <div className="col-md-6">
+                  <div className="mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start align-items-center">
+                    <YoTablePageSize />
+                    Total: {tableState.data?.count || 0}
+                    {tableState.state === API_STATE.LOADING ? (
+                      <Spinner
+                        size="sm"
+                        variant={color}
+                        className="ms-2 ml-auto"
+                        animation={"grow"}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <YoTablePaging />
                 </div>
               </div>
-              <div className="col-md-6">
-                <YoTablePaging />
+            )}
+            {pagingMode === PagingMode.PREVIOUS_NEXT && (
+              <div className="row justify-content-center">
+                <div className="col-md-12">
+                  <YoTablePagingNextPrevious />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </ListStateProvider>

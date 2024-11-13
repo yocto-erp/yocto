@@ -95,14 +95,16 @@ export interface TableState<F, R> {
 export interface InitTableStateProps<F> {
   filter?: F;
   sorts?: TableSortType;
+  pagingType?: PAGING_TYPE
 }
 
 export function initialTableState<F, R>({
   filter,
   sorts,
+  pagingType = PAGING_TYPE.PAGING
 }: InitTableStateProps<F>): TableState<F, R> {
   return {
-    pagingType: PAGING_TYPE.PAGING,
+    pagingType,
     errors: [],
     state: API_STATE.PENDING,
     search: {

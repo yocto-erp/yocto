@@ -5,11 +5,6 @@ import clsx from "clsx";
 
 const MAX = 5;
 
-enum PAGE_TYPE {
-  NORMAL = 1,
-  BREAK,
-}
-
 export function YoTablePaging() {
   const tableState = useListStateContext();
   const { onChangePage } = useListActionContext();
@@ -78,7 +73,7 @@ export function YoTablePaging() {
 
     // console.log(pages);
     return pages;
-  }, [tableState]);
+  }, [tableState, totalPages]);
 
   return (
     <nav aria-label="Page navigation" className="mb-2 mb-md-0">
