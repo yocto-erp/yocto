@@ -76,7 +76,7 @@ export interface REDUCE_ACTION<F, ROW extends BaseRow> {
   };
 }
 
-export const LIST_PAGE_SIZE = [10, 20, 50, 100];
+export const LIST_PAGE_SIZE = [10, 20, 50, 100, 500];
 
 export enum PAGING_TYPE {
   PAGING = 1,
