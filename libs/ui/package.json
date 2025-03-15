@@ -13,12 +13,12 @@
     "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
-    "bootstrap": "^5.2.3",
-    "react-bootstrap": "^2.7.0",
+    "bootstrap": "^5.3.3",
+    "react-bootstrap": "^2.10.9",
     "clsx": "^1.2.1",
-    "bootstrap-icons": "^1.10.3",
-    "qs": "^6.11.0",
-    "underscore": "^1.13.6"
+    "bootstrap-icons": "^1.11.3",
+    "qs": "^6.14.0",
+    "underscore": "^1.13.7"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

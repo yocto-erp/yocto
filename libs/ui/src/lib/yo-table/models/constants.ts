@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
-import { SearchRequest } from "./SearchRequest";
+import { FilterType, SearchRequest } from "./SearchRequest";
 import { SearchResponse } from "./SearchResponse";
+import { TableSortType } from "./Sort";
+import { Props as CardProps } from "../../card";
 
 export interface BaseRow {
   id: string | number;
@@ -70,3 +72,32 @@ export const TABLE_COLOR_CLASS: Record<TABLE_COLOR, any> = {
     table: "border-secondary",
   },
 };
+
+export enum PagingMode {
+  PAGING = 0,
+  PREVIOUS_NEXT = 1,
+}
+
+export interface YoTableProps<F, ROW extends BaseRow> {
+  columns: Array<TableColumn<ROW>>;
+  fetchData: TableFetchDataFn<F, ROW>;
+  initFilter?: FilterType;
+  initSort?: TableSortType;
+  rowId?: TableRowIdFn<ROW>;
+  className?: string;
+  color?: TABLE_COLOR;
+  children?: React.ReactNode;
+  enableSelectColumn?: boolean;
+  wrapperClass?: string;
+  onBeforeSearch?: (searchRequest: SearchRequest<F>) => void;
+  onSelectChange?: (rows: Array<ROW>) => void;
+  isShowPaging?: boolean;
+  isFirstLoad?: boolean;
+  isMultiSort?: boolean;
+  pagingMode?: PagingMode;
+}
+
+export interface YoTableCardProps<F, ROW extends BaseRow>
+  extends YoTableProps<F, ROW> {
+  card: CardProps;
+}

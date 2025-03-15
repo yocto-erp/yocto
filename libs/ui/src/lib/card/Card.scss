@@ -1,0 +1,67 @@
+$buttonWidth: calc(2rem + 2px);
+.card.my-card {
+  .card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .card-title {
+      margin-bottom: 0;
+    }
+
+    min-height: 40px;
+    padding: 0 0.6rem;
+
+    &.collapse {
+      &:not(.on) {
+        border-bottom-color: transparent;
+      }
+
+      .card-title {
+        button {
+          width: auto;
+          height: auto;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+
+          &::before {
+            content: "\F230";
+            margin-right: 0.6rem;
+            font-family: 'bootstrap-icons', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all .35s;
+          }
+        }
+      }
+
+      &.on {
+        button::before {
+          transform: rotate(-90deg)
+        }
+      }
+    }
+
+    .card-toolbar {
+      margin: 0;
+      padding: 0.5rem 0 0.5rem 0.5rem;
+
+      > button {
+        padding: 1rem;
+
+        &.btn-icon {
+          height: $buttonWidth;
+          width: $buttonWidth;
+
+          &.btn-md {
+            height: calc(1.5em + 1.3rem + 2px);
+            width: calc(1.5em + 1.3rem + 2px);
+          }
+        }
+      }
+    }
+  }
+}

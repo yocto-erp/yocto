@@ -1,18 +1,18 @@
 import {ComponentStory, ComponentMeta} from '@storybook/react';
-import {YoTable} from './yo-table';
-import {BaseRow, PagingMode, SORT_DIR, YoTableProps} from "./models";
+import {BaseRow, PagingMode, SORT_DIR, YoTableCardProps} from "./models";
 import {YoTableBody} from "./yo-table-body"
 import {YoTableHeader} from "./yo-table-header"
 import {YoTablePageSize} from "./yo-table-page-size"
 import {YoTablePaging} from "./yo-table-paging"
+import YoTableCard from "./yo-table-card";
 
 export default {
-  component: YoTable,
-  title: 'Table/YoTable',
+  component: YoTableCard,
+  title: 'Table/YoTableCard',
   subcomponents: {
     YoTableBody, YoTableHeader, YoTablePageSize, YoTablePaging
   }
-} as ComponentMeta<typeof YoTable>;
+} as ComponentMeta<typeof YoTableCard>;
 
 interface ROW extends BaseRow {
   name: string;
@@ -24,7 +24,7 @@ interface FILTER {
 }
 
 const totalRow = 10000
-const props: YoTableProps<FILTER, ROW> = {
+const props: YoTableCardProps<FILTER, ROW> = {
   columns: [
     {header: 'ID', data: 'id', sort: true, render: (row, i, globalIndex) => (globalIndex || 0) + 1},
     {header: 'Name', data: 'name', sort: true},
@@ -32,6 +32,9 @@ const props: YoTableProps<FILTER, ROW> = {
     {header: 'Birthday', data: 'birthday', sort: true, group: "info"},
     {header: 'Phone', data: 'phone', sort: true, group: "info"},
   ],
+  card: {
+    title: "Testing card"
+  },
   fetchData: (req) => new Promise((res, rej) => {
     console.log('fetchData', req)
     const data: ROW[] = [];
@@ -63,8 +66,8 @@ const props: YoTableProps<FILTER, ROW> = {
   })
 };
 
-const Template: ComponentStory<typeof YoTable<FILTER, ROW>> = (args) => (
-  <YoTable {...args}/>
+const Template: ComponentStory<typeof YoTableCard<FILTER, ROW>> = (args) => (
+  <YoTableCard {...args}/>
 );
 
 export const Primary = Template.bind({});
@@ -73,6 +76,7 @@ Primary.args = {
   fetchData: props.fetchData,
   enableSelectColumn: true,
   isMultiSort: true,
+  card: props.card,
   rowId: (row) => `abc${row.id}`,
   isShowPaging: true,
   pagingMode: PagingMode.PAGING,
