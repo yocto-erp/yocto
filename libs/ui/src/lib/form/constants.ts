@@ -6,6 +6,7 @@ import {
 
 export interface FormControlProps {
   label?: React.ReactNode;
+  labelClass?: string;
   required?: boolean;
   children?: React.ReactNode;
   className?: string;
