@@ -15,6 +15,8 @@ export const FormControlSelect = forwardRef<HTMLSelectElement, FormControlSelect
         label={props.label}
         className={props.className}
         required={props.required}
+        size={size}
+        labelClass={props.labelClass}
       >
         <select
           disabled={props.disabled}

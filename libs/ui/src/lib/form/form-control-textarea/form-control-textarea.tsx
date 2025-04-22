@@ -28,6 +28,8 @@ export const FormControlTextarea = forwardRef<
         label={props.label}
         className={props.className}
         required={props.required}
+        size={size}
+        labelClass={props.labelClass}
       >
         <textarea
           rows={props.rows}
